@@ -14,12 +14,13 @@ struct CStateNameMap {
 
 static const CStateNameMap StateNameMap[] = {
     { EUIState::None,           "None"                  },
+    { EUIState::Previous,       "Previous"              },
     { EUIState::Home,           "WinHome"               },
     { EUIState::Inst,           "WinMenu - Instrument"  },
     { EUIState::InstString,     "WinMenu - String"      },
     { EUIState::InstWind,       "WinMenu - Wind"        },
     { EUIState::InstPercussion, "WinMenu - Percussion"  },
-    { EUIState::Test,           "Test"               },
+    { EUIState::Test,           "Test"                  },
 };
 
 static const uint32_t cStateNameMapCount =

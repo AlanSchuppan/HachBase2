@@ -42,6 +42,7 @@ protected:
     CBaseWidget *mpWidget;
     CBaseWidget *UIStateFind(EUIState uiState);
     static EUIState UIState(CBaseWidget *pwidget);
+    EUIState UIStatePrevious();
     void Dump(int id);
 public:
     static CSingleton *CreateMe(std::string &name);
@@ -53,7 +54,6 @@ public:
    ~CUIContext();
 
     CBaseWidget *UIState(EUIState uiState, bool commit = false);
-    CBaseWidget *UIStatePrevious(bool commit = false);
     void Event(EUIEvent event, void *pdata);
 };
 

@@ -20,7 +20,9 @@ const char *UIEventName(EUIEvent event);
 //##############################################################################
 
 enum class EUIState {
-  None, Home, Test, Inst, InstString, InstWind, InstPercussion, Count
+  None, Previous, Home, // Required special states
+  Inst, InstString, InstWind, InstPercussion, Test,
+  Count // Required count, but is not a valid state
 };
 
 const char *UIStateName(EUIState stateID);

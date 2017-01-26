@@ -128,6 +128,8 @@ CBaseWidget *CUIContext::UIStateFind(EUIState uiState) {
 CBaseWidget *CUIContext::UIState(EUIState uiState, bool commit) {
     EUIState UIState =
         (mpWidget != nullptr) ? mpWidget->UIState() : EUIState::None;
+    if (uiState == EUIState::Previous)
+        uiState = UIStatePrevious();
     // If new state is not current state or no state
     if (uiState != EUIState::None && uiState != UIState) {
         // See if new state already exists
@@ -167,18 +169,15 @@ CBaseWidget *CUIContext::UIState(EUIState uiState, bool commit) {
     return mpWidget;
 }
 
-CBaseWidget *CUIContext::UIStatePrevious(bool commit) {
+EUIState CUIContext::UIStatePrevious() {
     EUIState CurrentState =
         mpWidget->UIState(); // Null mpWidget returns EUIState::None
     if (CurrentState == EUIState::Home || CurrentState == EUIState::None)
-        return nullptr;
+        return EUIState::None;
 
     CBaseWidget *pPrevWidget =
         dynamic_cast<CBaseWidget *>(mpWidget->parentWidget());
-    EUIState PrevState =
-        pPrevWidget->UIState(); // Null pPrevWidget returns EUIState::None
-
-    return UIState(PrevState, commit);
+    return (pPrevWidget != nullptr) ? pPrevWidget->UIState() : EUIState::None;
 }
 
 void CUIContext::Event(EUIEvent event, void *pdata) {

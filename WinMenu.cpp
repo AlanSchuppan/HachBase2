@@ -82,7 +82,7 @@ void CWinMenu::on_btnOk_clicked() {
 }
 
 void CWinMenu::on_btnCancel_clicked() {
-    UIContext.Get().UIStatePrevious();
+    UIContext.Get().UIState(EUIState::Previous);
 }
 
 void EnterHandler(Ui::CWinMenu */*pUI*/, bool /*first*/) {
