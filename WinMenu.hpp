@@ -20,7 +20,7 @@ struct CStrMenuMap {
 
 //##############################################################################
 
-struct CStrIDMenuMap {
+struct CMsgMenuMap {
     EMsg Message;
     EUIStateID State;
 };
@@ -34,7 +34,7 @@ public:
     explicit CWinMenu(CUIState *puiState, QWidget *parent = 0);
     ~CWinMenu();
     void Menu(const CStrMenuMap *pmenuMap);
-    void Menu(const CStrIDMenuMap *pmenuMap);
+    void Menu(const CMsgMenuMap *pmenuMap);
     void Disable(const std::vector<bool> &disables);
     void RowSelect(uint32_t ix);
     void Label(std::wstring label);

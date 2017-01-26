@@ -26,7 +26,7 @@ void CWinMenu::Menu(const CStrMenuMap *pmenuMap) {
         ui->lwMenu->setCurrentRow(0);
 }
 
-void CWinMenu::Menu(const CStrIDMenuMap *pmenuMap) {
+void CWinMenu::Menu(const CMsgMenuMap *pmenuMap) {
     CLang Lang;
     ui->lwMenu->clear();
     mLabels.clear();

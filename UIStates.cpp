@@ -40,7 +40,7 @@ void CUIStateMenuInst::Enter(bool first /*= true*/) {
         { nullptr,      EUIStateID::None           }
     };
 #else // !USE_STR_MENU_MAP
-    static const CStrIDMenuMap MenuMap[] {
+    static const CMsgMenuMap MenuMap[] {
         { EMsg::String,     EUIStateID::InstString     },
         { EMsg::Wind,       EUIStateID::InstWind       },
         { EMsg::Percussion, EUIStateID::InstPercussion },
@@ -59,7 +59,7 @@ void CUIStateMenuInst::Enter(bool first /*= true*/) {
             mpWinMenu->Label(EMsg::InstrumentType);
 
             std::vector<bool> Disables;
-            const CStrIDMenuMap *pMenuMap = MenuMap;
+            const CMsgMenuMap *pMenuMap = MenuMap;
             while (pMenuMap->Message != EMsg::None) {
                 Disables.push_back(pMenuMap->Message == EMsg::Test);
                 ++pMenuMap;
@@ -96,7 +96,7 @@ void CUIStateMenuString::Enter(bool first /*= true*/) {
         { nullptr,  EUIStateID::None }
     };
 #else // !USE_STR_MENU_MAP
-    static const CStrIDMenuMap MenuMap[] {
+    static const CMsgMenuMap MenuMap[] {
         { EMsg::Violin, EUIStateID::Home },
         { EMsg::Viola,  EUIStateID::Home },
         { EMsg::Cello,  EUIStateID::Test },
@@ -149,7 +149,7 @@ void CUIStateMenuWind::Enter(bool first /*= true*/) {
         { nullptr,   EUIStateID::None }
     };
 #else // !USE_STR_MENU_MAP
-    static const CStrIDMenuMap MenuMap[] {
+    static const CMsgMenuMap MenuMap[] {
         { EMsg::Flute,   EUIStateID::Home },
         { EMsg::Oboe,    EUIStateID::Home },
         { EMsg::Bassoon, EUIStateID::Home },
@@ -201,7 +201,7 @@ void CUIStateMenuPercussion::Enter(bool first /*= true*/) {
         { nullptr,      EUIStateID::None }
     };
 #else // !USE_STR_MENU_MAP
-    static const CStrIDMenuMap MenuMap[] {
+    static const CMsgMenuMap MenuMap[] {
         { EMsg::Drum,       EUIStateID::Home },
         { EMsg::Cymbal,     EUIStateID::Home },
         { EMsg::Tambourine, EUIStateID::Home },
