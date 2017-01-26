@@ -19,7 +19,7 @@ void CWinMenu::Menu(const CStrMenuMap *pmenuMap) {
     mUIStates.clear();
     while (pmenuMap->Name != nullptr) {
         ui->lwMenu->addItem(pmenuMap->Name);
-        mUIStates.push_back(pmenuMap->State);
+        mUIStates.push_back(pmenuMap->UIState);
         ++pmenuMap;
     }
     if (ui->lwMenu->count() > 0)
@@ -34,7 +34,7 @@ void CWinMenu::Menu(const CMsgMenuMap *pmenuMap) {
     while (pmenuMap->Message != EMsg::None) {
         ui->lwMenu->addItem(QString::fromStdWString(Lang.Message(pmenuMap->Message)));
         mLabels.push_back(pmenuMap->Message);
-        mUIStates.push_back(pmenuMap->State);
+        mUIStates.push_back(pmenuMap->UIState);
         ++pmenuMap;
     }
     if (ui->lwMenu->count() > 0)
@@ -76,8 +76,8 @@ void CWinMenu::Label(EMsg msg) {
 void CWinMenu::on_btnOk_clicked() {
     size_t Row = static_cast<size_t>(ui->lwMenu->currentRow());
     if (Row < mUIStates.size()) {
-        EUIStateID StateID = mUIStates[Row];
-        UIContext.Get().State(StateID, true); // true => commit
+        EUIState UIState = mUIStates[Row];
+        UIContext.Get().State(UIState, true); // true => commit
     }
 }
 

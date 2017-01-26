@@ -15,14 +15,14 @@ namespace Ui {
 
 struct CStrMenuMap {
     const char *Name;
-    EUIStateID State;
+    EUIState UIState;
 };
 
 //##############################################################################
 
 struct CMsgMenuMap {
     EMsg Message;
-    EUIStateID State;
+    EUIState UIState;
 };
 
 //##############################################################################
@@ -51,7 +51,7 @@ private slots:
 private:
     Ui::CWinMenu *ui;
     std::vector<EMsg> mLabels;
-    std::vector<EUIStateID> mUIStates;
+    std::vector<EUIState> mUIStates;
 };
 
 //##############################################################################

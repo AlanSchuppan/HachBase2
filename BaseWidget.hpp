@@ -20,21 +20,21 @@ public:
     CBaseWidget(CUIState *puiState, QWidget *parent = 0);
     virtual ~CBaseWidget();
     const char *Name() const;
-    EUIStateID UIStateID() const;
-    EUIStateID PrevStateID() const;
+    EUIState UIState() const;
+    EUIState PrevStateID() const;
 
     void Enter(bool first = true);
     void Exit(bool commit = false);
-    EUIStateID Event(EUIEvent event, void *pdata);
-    EUIStateID Click(EMsg msg);
+    EUIState Event(EUIEvent event, void *pdata);
+    EUIState Click(EMsg msg);
 
 //signals:
 
 //public slots:
 };
 
-inline EUIStateID CBaseWidget::UIStateID() const {
-    return (mpUIState != nullptr) ? mpUIState->UIStateID() : EUIStateID::None;
+inline EUIState CBaseWidget::UIState() const {
+    return (mpUIState != nullptr) ? mpUIState->UIState() : EUIState::None;
 }
 
 inline const char *CBaseWidget::Name() const {

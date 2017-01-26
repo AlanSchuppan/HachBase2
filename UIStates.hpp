@@ -10,14 +10,14 @@
 class CUIStateHome : public CUIState {
     CWinHome *mpWinHome;
 public:
-    CUIStateHome(EUIStateID uiStateID);
+    CUIStateHome(EUIState uiState);
 
     void Widget(CBaseWidget *pwidget);
 
     void Enter(bool first = true) override;
 //    void Exit(bool commit = false) override;
-//    EUIStateID Event(EUIEvent event, void *pdata) override;
-//    EUIStateID Click(EStringID stringID) override;
+//    EUIState Event(EUIEvent event, void *pdata) override;
+//    EUIState Click(EStringID stringID) override;
 };
 
 inline void CUIStateHome::Widget(CBaseWidget *pwidget) {
@@ -29,14 +29,14 @@ inline void CUIStateHome::Widget(CBaseWidget *pwidget) {
 class CUIStateMenuInst : public CUIState {
     CWinMenu *mpWinMenu;
 public:
-    CUIStateMenuInst(EUIStateID uiStateID);
+    CUIStateMenuInst(EUIState uiState);
 
     void Widget(CBaseWidget *pwidget);
 
     void Enter(bool first = true) override;
 //    void Exit(bool commit = false) override;
-//    EUIStateID Event(EUIEvent event, void *pdata) override;
-//    EUIStateID Click(EStringID stringID) override;
+//    EUIState Event(EUIEvent event, void *pdata) override;
+//    EUIState Click(EStringID stringID) override;
 };
 
 inline void CUIStateMenuInst::Widget(CBaseWidget *pwidget) {
@@ -48,14 +48,14 @@ inline void CUIStateMenuInst::Widget(CBaseWidget *pwidget) {
 class CUIStateMenuString : public CUIState {
     CWinMenu *mpWinMenu;
 public:
-    CUIStateMenuString(EUIStateID uiStateID);
+    CUIStateMenuString(EUIState uiState);
 
     void Widget(CBaseWidget *pwidget);
 
     void Enter(bool first = true) override;
     void Exit(bool commit = false) override;
-//    EUIStateID Event(EUIEvent event, void *pdata) override;
-//    EUIStateID Click(EStringID stringID) override;
+//    EUIState Event(EUIEvent event, void *pdata) override;
+//    EUIState Click(EStringID stringID) override;
 };
 
 inline void CUIStateMenuString::Widget(CBaseWidget *pwidget) {
@@ -67,14 +67,14 @@ inline void CUIStateMenuString::Widget(CBaseWidget *pwidget) {
 class CUIStateMenuWind : public CUIState {
     CWinMenu *mpWinMenu;
 public:
-    CUIStateMenuWind(EUIStateID uiStateID);
+    CUIStateMenuWind(EUIState uiState);
 
     void Widget(CBaseWidget *pwidget);
 
     void Enter(bool first = true) override;
     void Exit(bool commit = false) override;
-//    EUIStateID Event(EUIEvent event, void *pdata) override;
-//    EUIStateID Click(EStringID stringID) override;
+//    EUIState Event(EUIEvent event, void *pdata) override;
+//    EUIState Click(EStringID stringID) override;
 };
 
 inline void CUIStateMenuWind::Widget(CBaseWidget *pwidget) {
@@ -86,14 +86,14 @@ inline void CUIStateMenuWind::Widget(CBaseWidget *pwidget) {
 class CUIStateMenuPercussion : public CUIState {
     CWinMenu *mpWinMenu;
 public:
-    CUIStateMenuPercussion(EUIStateID uiStateID);
+    CUIStateMenuPercussion(EUIState uiState);
 
     void Widget(CBaseWidget *pwidget);
 
     void Enter(bool first = true) override;
     void Exit(bool commit = false) override;
-//    EUIStateID Event(EUIEvent event, void *pdata) override;
-//    EUIStateID Click(EStringID stringID) override;
+//    EUIState Event(EUIEvent event, void *pdata) override;
+//    EUIState Click(EStringID stringID) override;
 };
 
 inline void CUIStateMenuPercussion::Widget(CBaseWidget *pwidget) {

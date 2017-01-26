@@ -20,14 +20,14 @@ CBaseWidget::~CBaseWidget() {
   delete mpUIState;
 }
 
-EUIStateID CBaseWidget::PrevStateID() const {
-    EUIStateID UIStateID = EUIStateID::None;
-    if (mpUIState != nullptr && mpUIState->UIStateID() != EUIStateID::Home) {
+EUIState CBaseWidget::PrevStateID() const {
+    EUIState UIState = EUIState::None;
+    if (mpUIState != nullptr && mpUIState->UIState() != EUIState::Home) {
         CBaseWidget *pBaseWidget = dynamic_cast<CBaseWidget *>(parentWidget());
         if (pBaseWidget != nullptr)
-            UIStateID = pBaseWidget->UIStateID();
+            UIState = pBaseWidget->UIState();
     }
-    return UIStateID;
+    return UIState;
 }
 
 void CBaseWidget::Enter(bool first) {
@@ -50,14 +50,14 @@ void CBaseWidget::Exit(bool commit) {
         mpUIState->Exit(commit);
 }
 
-EUIStateID CBaseWidget::Event(EUIEvent event, void *pdata) {
+EUIState CBaseWidget::Event(EUIEvent event, void *pdata) {
     return (mpUIState != nullptr)
-        ? mpUIState->Event(event, pdata) : EUIStateID::None;
+        ? mpUIState->Event(event, pdata) : EUIState::None;
 }
 
-EUIStateID CBaseWidget::Click(EMsg msg) {
+EUIState CBaseWidget::Click(EMsg msg) {
     return  (mpUIState != nullptr)
-        ? mpUIState->Click(msg) : EUIStateID::None;
+        ? mpUIState->Click(msg) : EUIState::None;
 }
 
 //##############################################################################

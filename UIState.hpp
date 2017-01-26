@@ -15,15 +15,15 @@ enum class EUIEvent {
 const char *UIEventName(EUIEvent event);
 
 //##############################################################################
-// EUIStateID
+// EUIState
 //##############################################################################
 //##############################################################################
 
-enum class EUIStateID {
+enum class EUIState {
   None, Home, Test, Inst, InstString, InstWind, InstPercussion, Count
 };
 
-const char *UIStateName(EUIStateID stateID);
+const char *UIStateName(EUIState stateID);
 
 //##############################################################################
 // CUIState
@@ -31,22 +31,22 @@ const char *UIStateName(EUIStateID stateID);
 //##############################################################################
 
 class CUIState {
-    EUIStateID mUIStateID;
+    EUIState mUIState;
 public:
-    CUIState(EUIStateID stateID);
+    CUIState(EUIState stateID);
     virtual ~CUIState();
 
-    EUIStateID UIStateID() const;
+    EUIState UIState() const;
     const char *Name() const;
 
     virtual void Enter(bool first = true);
     virtual void Exit(bool commit = false);
-    virtual EUIStateID Event(EUIEvent event, void *pdata);
-    virtual EUIStateID Click(EMsg msg);
+    virtual EUIState Event(EUIEvent event, void *pdata);
+    virtual EUIState Click(EMsg msg);
 };
 
-inline EUIStateID CUIState::UIStateID() const {
-    return mUIStateID;
+inline EUIState CUIState::UIState() const {
+    return mUIState;
 }
 
 #endif // UISTATE_HPP

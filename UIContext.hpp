@@ -40,19 +40,19 @@ extern CSettings Settings;
 class CUIContext : public CSingleton {
 protected:
     CBaseWidget *mpWidget;
-    CBaseWidget *StateFind(EUIStateID stateID);
-    static EUIStateID UIStateID(CBaseWidget *pwidget);
+    CBaseWidget *StateFind(EUIState uiState);
+    static EUIState UIState(CBaseWidget *pwidget);
     void Dump(int id);
 public:
     static CSingleton *CreateMe(std::string &name);
-    static CBaseWidget *Create(EUIStateID state,
+    static CBaseWidget *Create(EUIState uiState,
                                CBaseWidget *pprevious = nullptr);
     static bool Test();
 
     CUIContext(const std::string &name, CBaseWidget *pwidget = nullptr);
    ~CUIContext();
 
-    CBaseWidget *State(EUIStateID stateID, bool commit = false);
+    CBaseWidget *State(EUIState uiState, bool commit = false);
     CBaseWidget *StatePrevious(bool commit = false);
     void Event(EUIEvent event, void *pdata);
 };

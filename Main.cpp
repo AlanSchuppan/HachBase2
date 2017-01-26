@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     WinMain.setMinimumSize(Width, Height);
 //    WinMain.show();
 
-    UIContext.Get().State(EUIStateID::Home);
+    UIContext.Get().State(EUIState::Home);
 
     return a.exec();
 }

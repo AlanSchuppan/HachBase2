@@ -5,8 +5,8 @@
 
 //##############################################################################
 
-CUIStateHome::CUIStateHome(EUIStateID uiStateID) :
-    CUIState(uiStateID), mpWinHome(nullptr) {
+CUIStateHome::CUIStateHome(EUIState uiState) :
+    CUIState(uiState), mpWinHome(nullptr) {
 }
 
 void CUIStateHome::Enter(bool /*first = true*/) {
@@ -18,34 +18,34 @@ void CUIStateHome::Enter(bool /*first = true*/) {
 //void CUIStateHome::Exit(bool commit = false) {
 //}
 
-//EUIStateID CUIStateHome::Event(EUIEvent event, void *pdata) {
+//EUIState CUIStateHome::Event(EUIEvent event, void *pdata) {
 //}
 
-//EUIStateID CUIStateHome::Click(ELng msg) {
+//EUIState CUIStateHome::Click(ELng msg) {
 //}
 
 //##############################################################################
 
-CUIStateMenuInst::CUIStateMenuInst(EUIStateID uiStateID) :
-    CUIState(uiStateID), mpWinMenu(nullptr) {
+CUIStateMenuInst::CUIStateMenuInst(EUIState uiState) :
+    CUIState(uiState), mpWinMenu(nullptr) {
 }
 
 void CUIStateMenuInst::Enter(bool first /*= true*/) {
 #ifdef USE_STR_MENU_MAP
     static const CStrMenuMap MenuMap[] {
-        { "String",     EUIStateID::InstString     },
-        { "Wind",       EUIStateID::InstWind       },
-        { "Percussion", EUIStateID::InstPercussion },
-        { "Test",       EUIStateID::Test           },
-        { nullptr,      EUIStateID::None           }
+        { "String",     EUIState::InstString     },
+        { "Wind",       EUIState::InstWind       },
+        { "Percussion", EUIState::InstPercussion },
+        { "Test",       EUIState::Test           },
+        { nullptr,      EUIState::None           }
     };
 #else // !USE_STR_MENU_MAP
     static const CMsgMenuMap MenuMap[] {
-        { EMsg::String,     EUIStateID::InstString     },
-        { EMsg::Wind,       EUIStateID::InstWind       },
-        { EMsg::Percussion, EUIStateID::InstPercussion },
-        { EMsg::Test,       EUIStateID::Test           },
-        { EMsg::None,       EUIStateID::None           }
+        { EMsg::String,     EUIState::InstString     },
+        { EMsg::Wind,       EUIState::InstWind       },
+        { EMsg::Percussion, EUIState::InstPercussion },
+        { EMsg::Test,       EUIState::Test           },
+        { EMsg::None,       EUIState::None           }
     };
 #endif
 
@@ -74,34 +74,34 @@ void CUIStateMenuInst::Enter(bool first /*= true*/) {
 //void CUIStateMenuInst::Exit(bool commit = false) {
 //}
 
-//EUIStateID CUIStateMenuInst::Event(EUIEvent event, void *pdata) {
+//EUIState CUIStateMenuInst::Event(EUIEvent event, void *pdata) {
 //}
 
-//EUIStateID CUIStateMenuInst::Click(EMsg msg) {
+//EUIState CUIStateMenuInst::Click(EMsg msg) {
 //}
 
 //##############################################################################
 
-CUIStateMenuString::CUIStateMenuString(EUIStateID uiStateID) :
-    CUIState(uiStateID), mpWinMenu(nullptr) {
+CUIStateMenuString::CUIStateMenuString(EUIState uiState) :
+    CUIState(uiState), mpWinMenu(nullptr) {
 }
 
 void CUIStateMenuString::Enter(bool first /*= true*/) {
 #ifdef USE_STR_MENU_MAP
     static const CStrMenuMap MenuMap[] {
-        { "Violin", EUIStateID::Home },
-        { "Viola",  EUIStateID::Home },
-        { "Cello",  EUIStateID::Test },
-        { "Bass",   EUIStateID::Home },
-        { nullptr,  EUIStateID::None }
+        { "Violin", EUIState::Home },
+        { "Viola",  EUIState::Home },
+        { "Cello",  EUIState::Test },
+        { "Bass",   EUIState::Home },
+        { nullptr,  EUIState::None }
     };
 #else // !USE_STR_MENU_MAP
     static const CMsgMenuMap MenuMap[] {
-        { EMsg::Violin, EUIStateID::Home },
-        { EMsg::Viola,  EUIStateID::Home },
-        { EMsg::Cello,  EUIStateID::Test },
-        { EMsg::Bass,   EUIStateID::Home },
-        { EMsg::None,   EUIStateID::None }
+        { EMsg::Violin, EUIState::Home },
+        { EMsg::Viola,  EUIState::Home },
+        { EMsg::Cello,  EUIState::Test },
+        { EMsg::Bass,   EUIState::Home },
+        { EMsg::None,   EUIState::None }
     };
 #endif
 
@@ -127,34 +127,34 @@ void CUIStateMenuString::Exit(bool commit /*= false*/) {
     }
 }
 
-//EUIStateID CUIStateMenuString::Event(EUIEvent event, void *pdata) {
+//EUIState CUIStateMenuString::Event(EUIEvent event, void *pdata) {
 //}
 
-//EUIStateID CUIStateMenuString::Click(EMsg msg) {
+//EUIState CUIStateMenuString::Click(EMsg msg) {
 //}
 
 //##############################################################################
 
-CUIStateMenuWind::CUIStateMenuWind(EUIStateID uiStateID) :
-    CUIState(uiStateID), mpWinMenu(nullptr) {
+CUIStateMenuWind::CUIStateMenuWind(EUIState uiState) :
+    CUIState(uiState), mpWinMenu(nullptr) {
 }
 
 void CUIStateMenuWind::Enter(bool first /*= true*/) {
 #ifdef USE_STR_MENU_MAP
     static const CStrMenuMap MenuMap[] {
-        { "Flute",   EUIStateID::Home },
-        { "Oboe",    EUIStateID::Home },
-        { "Bassoon", EUIStateID::Home },
-        { "Trumpet", EUIStateID::Home },
-        { nullptr,   EUIStateID::None }
+        { "Flute",   EUIState::Home },
+        { "Oboe",    EUIState::Home },
+        { "Bassoon", EUIState::Home },
+        { "Trumpet", EUIState::Home },
+        { nullptr,   EUIState::None }
     };
 #else // !USE_STR_MENU_MAP
     static const CMsgMenuMap MenuMap[] {
-        { EMsg::Flute,   EUIStateID::Home },
-        { EMsg::Oboe,    EUIStateID::Home },
-        { EMsg::Bassoon, EUIStateID::Home },
-        { EMsg::Trumpet, EUIStateID::Home },
-        { EMsg::None,    EUIStateID::None }
+        { EMsg::Flute,   EUIState::Home },
+        { EMsg::Oboe,    EUIState::Home },
+        { EMsg::Bassoon, EUIState::Home },
+        { EMsg::Trumpet, EUIState::Home },
+        { EMsg::None,    EUIState::None }
     };
 #endif
 
@@ -180,32 +180,32 @@ void CUIStateMenuWind::Exit(bool commit /*= false*/) {
     }
 }
 
-//EUIStateID CUIStateMenuWind::Event(EUIEvent event, void *pdata) {
+//EUIState CUIStateMenuWind::Event(EUIEvent event, void *pdata) {
 //}
 
-//EUIStateID CUIStateMenuWind::Click(EMsg msg) {
+//EUIState CUIStateMenuWind::Click(EMsg msg) {
 //}
 
 //##############################################################################
 
-CUIStateMenuPercussion::CUIStateMenuPercussion(EUIStateID uiStateID) :
-    CUIState(uiStateID), mpWinMenu(nullptr) {
+CUIStateMenuPercussion::CUIStateMenuPercussion(EUIState uiState) :
+    CUIState(uiState), mpWinMenu(nullptr) {
 }
 
 void CUIStateMenuPercussion::Enter(bool first /*= true*/) {
 #ifdef USE_STR_MENU_MAP
     static const CStrMenuMap MenuMap[] {
-        { "Drum",       EUIStateID::Home },
-        { "Cymbal",     EUIStateID::Home },
-        { "Tambourine", EUIStateID::Home },
-        { nullptr,      EUIStateID::None }
+        { "Drum",       EUIState::Home },
+        { "Cymbal",     EUIState::Home },
+        { "Tambourine", EUIState::Home },
+        { nullptr,      EUIState::None }
     };
 #else // !USE_STR_MENU_MAP
     static const CMsgMenuMap MenuMap[] {
-        { EMsg::Drum,       EUIStateID::Home },
-        { EMsg::Cymbal,     EUIStateID::Home },
-        { EMsg::Tambourine, EUIStateID::Home },
-        { EMsg::None,       EUIStateID::None }
+        { EMsg::Drum,       EUIState::Home },
+        { EMsg::Cymbal,     EUIState::Home },
+        { EMsg::Tambourine, EUIState::Home },
+        { EMsg::None,       EUIState::None }
     };
 #endif
 
@@ -231,8 +231,8 @@ void CUIStateMenuPercussion::Exit(bool commit /*= false*/) {
     }
 }
 
-//EUIStateID CUIStateMenuPercussion::Event(EUIEvent event, void *pdata) {
+//EUIState CUIStateMenuPercussion::Event(EUIEvent event, void *pdata) {
 //}
 
-//EUIStateID CUIStateMenuPercussion::Click(EMsg msg) {
+//EUIState CUIStateMenuPercussion::Click(EMsg msg) {
 //}

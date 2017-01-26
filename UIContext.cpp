@@ -25,67 +25,67 @@ CSettings Settings;
 //##############################################################################
 //##############################################################################
 
-CBaseWidget *CUIContext::Create(EUIStateID stateID,
+CBaseWidget *CUIContext::Create(EUIState uiState,
                                      CBaseWidget *pprevious) {
     CBaseWidget *pWidget = nullptr;
 
-    switch (stateID) {
-    case EUIStateID::Home:
+    switch (uiState) {
+    case EUIState::Home:
         {
             CUIStateHome *pUIState =
-                new CUIStateHome(stateID);
+                new CUIStateHome(uiState);
             pWidget = new CWinHome(pUIState, pprevious);
             pUIState->Widget(pWidget);
         }
         break;
 
-    case EUIStateID::Inst:
+    case EUIState::Inst:
         {
             CUIStateMenuInst *pUIState =
-                new CUIStateMenuInst(stateID);
+                new CUIStateMenuInst(uiState);
             pWidget = new CWinMenu(pUIState, pprevious);
             pUIState->Widget(pWidget);
         }
         break;
 
-    case EUIStateID::InstString:
+    case EUIState::InstString:
         {
             CUIStateMenuString *pUIState =
-                new CUIStateMenuString(stateID);
+                new CUIStateMenuString(uiState);
             pWidget = new CWinMenu(pUIState, pprevious);
             pUIState->Widget(pWidget);
         }
         break;
 
-    case EUIStateID::InstWind:
+    case EUIState::InstWind:
         {
             CUIStateMenuWind *pUIState =
-                new CUIStateMenuWind(stateID);
+                new CUIStateMenuWind(uiState);
             pWidget = new CWinMenu(pUIState, pprevious);
             pUIState->Widget(pWidget);
         }
         break;
 
-    case EUIStateID::InstPercussion:
+    case EUIState::InstPercussion:
         {
             CUIStateMenuPercussion *pUIState =
-                new CUIStateMenuPercussion(stateID);
+                new CUIStateMenuPercussion(uiState);
             pWidget = new CWinMenu(pUIState, pprevious);
             pUIState->Widget(pWidget);
         }
         break;
 
-//    case EUIStateID::Test:
-//        pWidget = new CWinList(new CUIState(stateID), pprevious);
+//    case EUIState::Test:
+//        pWidget = new CWinList(new CUIState(uiState), pprevious);
 //        break;
 
     default:
         {
             std::stringstream Message;
             Message << "CUIState::Create(): UI state \""
-                    << UIStateName(stateID)
+                    << UIStateName(uiState)
                     << "("
-                    << static_cast<uint32_t>(stateID)
+                    << static_cast<uint32_t>(uiState)
                     << ")\" is not implemented.";
             throw std::runtime_error(Message.str());
         }
@@ -101,8 +101,8 @@ CBaseWidget *CUIContext::Create(EUIStateID stateID,
     return pWidget;
 }
 
-EUIStateID CUIContext::UIStateID(CBaseWidget *pwidget) {
-    return pwidget->UIStateID(); // Result is valid even when pwidget is null
+EUIState CUIContext::UIState(CBaseWidget *pwidget) {
+    return pwidget->UIState(); // Result is valid even when pwidget is null
 }
 
 CUIContext::CUIContext(const std::string &name,
@@ -113,29 +113,29 @@ CUIContext::CUIContext(const std::string &name,
 CUIContext::~CUIContext() {
 }
 
-CBaseWidget *CUIContext::StateFind(EUIStateID stateID) {
+CBaseWidget *CUIContext::StateFind(EUIState uiState) {
     CBaseWidget *pWidget = mpWidget;
-    EUIStateID StateID =
-        (pWidget != nullptr) ? pWidget->UIStateID() : EUIStateID::None;
-    while (StateID != stateID && StateID != EUIStateID::None) {
+    EUIState StateID =
+        (pWidget != nullptr) ? pWidget->UIState() : EUIState::None;
+    while (StateID != uiState && StateID != EUIState::None) {
         pWidget = dynamic_cast<CBaseWidget *>(pWidget->parentWidget());
         StateID =
-            (pWidget != nullptr) ? pWidget->UIStateID() : EUIStateID::None;
+            (pWidget != nullptr) ? pWidget->UIState() : EUIState::None;
     }
-    return (StateID == stateID) ? pWidget : nullptr;
+    return (StateID == uiState) ? pWidget : nullptr;
 }
 
-CBaseWidget *CUIContext::State(EUIStateID stateID, bool commit) {
-    EUIStateID UIStateID =
-        (mpWidget != nullptr) ? mpWidget->UIStateID() : EUIStateID::None;
+CBaseWidget *CUIContext::State(EUIState uiState, bool commit) {
+    EUIState UIState =
+        (mpWidget != nullptr) ? mpWidget->UIState() : EUIState::None;
     // If new state is not current state or no state
-    if (stateID != EUIStateID::None && stateID != UIStateID) {
+    if (uiState != EUIState::None && uiState != UIState) {
         // See if new state already exists
-        CBaseWidget *pNextWidget = StateFind(stateID);
+        CBaseWidget *pNextWidget = StateFind(uiState);
 
         // If new state...
         if (pNextWidget == nullptr) {
-            pNextWidget = Create(stateID, mpWidget);
+            pNextWidget = Create(uiState, mpWidget);
             if (mpWidget != nullptr)
                 mpWidget->Exit(commit);
 //            {
@@ -168,17 +168,17 @@ CBaseWidget *CUIContext::State(EUIStateID stateID, bool commit) {
 }
 
 CBaseWidget *CUIContext::StatePrevious(bool commit) {
-    EUIStateID CurrentState =
-        mpWidget->UIStateID(); // Null mpWidget returns EUIState::None
-    if (CurrentState == EUIStateID::Home || CurrentState == EUIStateID::None)
+    EUIState CurrentState =
+        mpWidget->UIState(); // Null mpWidget returns EUIState::None
+    if (CurrentState == EUIState::Home || CurrentState == EUIState::None)
         return nullptr;
 
     CBaseWidget *pPrevWidget =
         dynamic_cast<CBaseWidget *>(mpWidget->parentWidget());
-    EUIStateID PrevStateID =
-        pPrevWidget->UIStateID(); // Null pPrevWidget returns EUIState::None
+    EUIState PrevState =
+        pPrevWidget->UIState(); // Null pPrevWidget returns EUIState::None
 
-    return State(PrevStateID, commit);
+    return State(PrevState, commit);
 }
 
 void CUIContext::Event(EUIEvent event, void *pdata) {
@@ -188,14 +188,14 @@ void CUIContext::Event(EUIEvent event, void *pdata) {
 
 void CUIContext::Dump(int id) {
     cout << "State " << id << ":" << endl;
-    EUIStateID StateID = EUIStateID::None;
+    EUIState StateID = EUIState::None;
     CBaseWidget *pWidget = mpWidget;
     do {
         cout << "  " << pWidget->Name() << endl;
         StateID =
-            (pWidget != nullptr) ? pWidget->UIStateID() : EUIStateID::None;
+            (pWidget != nullptr) ? pWidget->UIState() : EUIState::None;
         pWidget = dynamic_cast<CBaseWidget *>(pWidget->parent());
-    } while (StateID != EUIStateID::Home && StateID != EUIStateID::None);
+    } while (StateID != EUIState::Home && StateID != EUIState::None);
 }
 
 CSingleton *CUIContext::CreateMe(std::string &name) {
