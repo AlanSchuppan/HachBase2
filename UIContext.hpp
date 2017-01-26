@@ -40,7 +40,7 @@ extern CSettings Settings;
 class CUIContext : public CSingleton {
 protected:
     CBaseWidget *mpWidget;
-    CBaseWidget *StateFind(EUIState uiState);
+    CBaseWidget *UIStateFind(EUIState uiState);
     static EUIState UIState(CBaseWidget *pwidget);
     void Dump(int id);
 public:
@@ -52,8 +52,8 @@ public:
     CUIContext(const std::string &name, CBaseWidget *pwidget = nullptr);
    ~CUIContext();
 
-    CBaseWidget *State(EUIState uiState, bool commit = false);
-    CBaseWidget *StatePrevious(bool commit = false);
+    CBaseWidget *UIState(EUIState uiState, bool commit = false);
+    CBaseWidget *UIStatePrevious(bool commit = false);
     void Event(EUIEvent event, void *pdata);
 };
 

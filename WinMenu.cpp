@@ -77,12 +77,12 @@ void CWinMenu::on_btnOk_clicked() {
     size_t Row = static_cast<size_t>(ui->lwMenu->currentRow());
     if (Row < mUIStates.size()) {
         EUIState UIState = mUIStates[Row];
-        UIContext.Get().State(UIState, true); // true => commit
+        UIContext.Get().UIState(UIState, true); // true => commit
     }
 }
 
 void CWinMenu::on_btnCancel_clicked() {
-    UIContext.Get().StatePrevious();
+    UIContext.Get().UIStatePrevious();
 }
 
 void EnterHandler(Ui::CWinMenu */*pUI*/, bool /*first*/) {

@@ -99,7 +99,7 @@ void CUIStateMenuString::Enter(bool first /*= true*/) {
     static const CMsgMenuMap MenuMap[] {
         { EMsg::Violin, EUIState::Home },
         { EMsg::Viola,  EUIState::Home },
-        { EMsg::Cello,  EUIState::Test },
+        { EMsg::Cello,  EUIState::Home },
         { EMsg::Bass,   EUIState::Home },
         { EMsg::None,   EUIState::None }
     };

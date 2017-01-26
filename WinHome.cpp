@@ -16,7 +16,7 @@ CWinHome::~CWinHome() {
 }
 
 void CWinHome::on_btnStart_clicked() {
-    UIContext.Get().State(EUIState::Inst);
+    UIContext.Get().UIState(EUIState::Inst);
 }
 
 void CWinHome::Instrument(EMsg instrument) {
