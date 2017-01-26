@@ -31,9 +31,9 @@ void CWinMenu::Menu(const CStrIDMenuMap *pmenuMap) {
     ui->lwMenu->clear();
     mLabels.clear();
     mUIStates.clear();
-    while (pmenuMap->StringID != EString::None) {
-        ui->lwMenu->addItem(QString::fromStdWString(Lang.String(pmenuMap->StringID)));
-        mLabels.push_back(pmenuMap->StringID);
+    while (pmenuMap->Message != EMsg::None) {
+        ui->lwMenu->addItem(QString::fromStdWString(Lang.Message(pmenuMap->Message)));
+        mLabels.push_back(pmenuMap->Message);
         mUIStates.push_back(pmenuMap->State);
         ++pmenuMap;
     }
@@ -41,13 +41,35 @@ void CWinMenu::Menu(const CStrIDMenuMap *pmenuMap) {
         ui->lwMenu->setCurrentRow(0);
 }
 
+void CWinMenu::Disable(const std::vector<bool> &disables) {
+    size_t MenuCount = static_cast<size_t>(ui->lwMenu->count());
+    size_t DisableCount = disables.size();
+    for (size_t Ix = 0; Ix < MenuCount; ++Ix) {
+        bool Disabled = (Ix < DisableCount && disables[Ix]);
+        Qt::ItemFlags Flags = ui->lwMenu->item(Ix)->flags();
+        if (Disabled)
+            Flags &= ~Qt::ItemIsEnabled;
+        else
+            Flags |= Qt::ItemIsEnabled;
+        ui->lwMenu->item(Ix)->setFlags(Flags);
+    }
+}
+
+void CWinMenu::RowSelect(uint32_t ix) {
+    if (ix < static_cast<uint32_t>(ui->lwMenu->count())) {
+        Qt::ItemFlags Flags = ui->lwMenu->item(ix)->flags();
+        if ((Flags & Qt::ItemIsEnabled) != 0)
+            ui->lwMenu->setCurrentRow(ix);
+    }
+}
+
 void CWinMenu::Label(std::wstring label) {
     ui->lblTitle->setText(QString::fromStdWString(label));
 }
 
-void CWinMenu::Label(EString stringID) {
+void CWinMenu::Label(EMsg msg) {
     CLang Lang;
-    std::wstring Title = Lang.String(stringID);
+    std::wstring Title = Lang.Message(msg);
     ui->lblTitle->setText(QString::fromStdWString(Title));
 }
 
@@ -68,9 +90,9 @@ void EnterHandler(Ui::CWinMenu */*pUI*/, bool /*first*/) {
     // determined by the state ID
 }
 
-EString CWinMenu::Selection() const {
+EMsg CWinMenu::Selection() const {
     size_t Row = static_cast<size_t>(ui->lwMenu->currentRow());
-    return (Row < mUIStates.size()) ? mLabels[Row] : EString::None;
+    return (Row < mUIStates.size()) ? mLabels[Row] : EMsg::None;
 }
 
 

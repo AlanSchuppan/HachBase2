@@ -7,7 +7,7 @@ enum class ELang {
     English
 };
 
-enum class EString {
+enum class EMsg {
     None, Ok, Cancel, Start, InstrumentType, String, Wind, Percussion, Violin,
     Viola, Cello, Bass, Flute, Oboe, Bassoon, Trumpet, Drum, Cymbal, Tambourine,
     Test
@@ -15,10 +15,10 @@ enum class EString {
 
 class CLang {
   //static const wchar_t *English[];
-  const wchar_t **mStrings;
+  const wchar_t **mMessages;
 public:
     CLang();
-    std::wstring String(EString str);
+    std::wstring Message(EMsg msg);
 };
 
 #endif // LANG_HPP

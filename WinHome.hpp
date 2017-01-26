@@ -16,7 +16,7 @@ class CWinHome : public CBaseWidget
 public:
     explicit CWinHome(CUIState *puiState, QWidget *parent = 0);
     ~CWinHome();
-    void Instrument(EString instrument);
+    void Instrument(EMsg instrument);
 
 private slots:
     void on_btnStart_clicked();

@@ -26,7 +26,7 @@ public:
     void Enter(bool first = true);
     void Exit(bool commit = false);
     EUIStateID Event(EUIEvent event, void *pdata);
-    EUIStateID Click(EStringID stringID);
+    EUIStateID Click(EMsg msg);
 
 //signals:
 

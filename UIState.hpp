@@ -1,14 +1,7 @@
 #ifndef UISTATE_HPP
 #define UISTATE_HPP
 
-//##############################################################################
-// EStringID
-//##############################################################################
-//##############################################################################
-
-enum class EStringID {
-  None, Test
-};
+#include "Lang.hpp"
 
 //##############################################################################
 // EUIEvent
@@ -49,7 +42,7 @@ public:
     virtual void Enter(bool first = true);
     virtual void Exit(bool commit = false);
     virtual EUIStateID Event(EUIEvent event, void *pdata);
-    virtual EUIStateID Click(EStringID stringID);
+    virtual EUIStateID Click(EMsg msg);
 };
 
 inline EUIStateID CUIState::UIStateID() const {

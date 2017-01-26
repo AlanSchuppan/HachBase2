@@ -55,9 +55,9 @@ EUIStateID CBaseWidget::Event(EUIEvent event, void *pdata) {
         ? mpUIState->Event(event, pdata) : EUIStateID::None;
 }
 
-EUIStateID CBaseWidget::Click(EStringID stringID) {
+EUIStateID CBaseWidget::Click(EMsg msg) {
     return  (mpUIState != nullptr)
-        ? mpUIState->Click(stringID) : EUIStateID::None;
+        ? mpUIState->Click(msg) : EUIStateID::None;
 }
 
 //##############################################################################

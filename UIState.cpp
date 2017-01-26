@@ -19,7 +19,7 @@ static const CStateNameMap StateNameMap[] = {
     { EUIStateID::InstString,     "WinMenu - String"      },
     { EUIStateID::InstWind,       "WinMenu - Wind"        },
     { EUIStateID::InstPercussion, "WinMenu - Percussion"  },
-    { EUIStateID::Test,           "WinList"               },
+    { EUIStateID::Test,           "Test"               },
 };
 
 static const uint32_t cStateNameMapCount =
@@ -59,6 +59,6 @@ EUIStateID CUIState::Event(EUIEvent /*event*/, void * /*pdata*/) {
     return EUIStateID::None;
 }
 
-EUIStateID CUIState::Click(EStringID /*stringID*/) {
+EUIStateID CUIState::Click(EMsg /*msg*/) {
     return EUIStateID::None;
 }

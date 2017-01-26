@@ -21,7 +21,7 @@ void CUIStateHome::Enter(bool /*first = true*/) {
 //EUIStateID CUIStateHome::Event(EUIEvent event, void *pdata) {
 //}
 
-//EUIStateID CUIStateHome::Click(EStringID stringID) {
+//EUIStateID CUIStateHome::Click(ELng msg) {
 //}
 
 //##############################################################################
@@ -36,18 +36,16 @@ void CUIStateMenuInst::Enter(bool first /*= true*/) {
         { "String",     EUIStateID::InstString     },
         { "Wind",       EUIStateID::InstWind       },
         { "Percussion", EUIStateID::InstPercussion },
-        { "Test",       EUIStateID::None           },
-//        { "Test",       EUIStateID::Test           },
+        { "Test",       EUIStateID::Test           },
         { nullptr,      EUIStateID::None           }
     };
 #else // !USE_STR_MENU_MAP
     static const CStrIDMenuMap MenuMap[] {
-        { EString::String,     EUIStateID::InstString     },
-        { EString::Wind,       EUIStateID::InstWind       },
-        { EString::Percussion, EUIStateID::InstPercussion },
-        { EString::Test,       EUIStateID::None           },
-//        { EString::Test,       EUIStateID::Test           },
-        { EString::None,       EUIStateID::None           }
+        { EMsg::String,     EUIStateID::InstString     },
+        { EMsg::Wind,       EUIStateID::InstWind       },
+        { EMsg::Percussion, EUIStateID::InstPercussion },
+        { EMsg::Test,       EUIStateID::Test           },
+        { EMsg::None,       EUIStateID::None           }
     };
 #endif
 
@@ -58,7 +56,16 @@ void CUIStateMenuInst::Enter(bool first /*= true*/) {
             mpWinMenu->Label(L"Instrument Type");
 #else // !USE_STR_MENU_MAP
             CLang Lang;
-            mpWinMenu->Label(EString::InstrumentType);
+            mpWinMenu->Label(EMsg::InstrumentType);
+
+            std::vector<bool> Disables;
+            const CStrIDMenuMap *pMenuMap = MenuMap;
+            while (pMenuMap->Message != EMsg::None) {
+                Disables.push_back(pMenuMap->Message == EMsg::Test);
+                ++pMenuMap;
+            }
+            mpWinMenu->Disable(Disables);
+            mpWinMenu->RowSelect(1);
 #endif
         }
     }
@@ -70,7 +77,7 @@ void CUIStateMenuInst::Enter(bool first /*= true*/) {
 //EUIStateID CUIStateMenuInst::Event(EUIEvent event, void *pdata) {
 //}
 
-//EUIStateID CUIStateMenuInst::Click(EStringID stringID) {
+//EUIStateID CUIStateMenuInst::Click(EMsg msg) {
 //}
 
 //##############################################################################
@@ -90,11 +97,11 @@ void CUIStateMenuString::Enter(bool first /*= true*/) {
     };
 #else // !USE_STR_MENU_MAP
     static const CStrIDMenuMap MenuMap[] {
-        { EString::Violin, EUIStateID::Home },
-        { EString::Viola,  EUIStateID::Home },
-        { EString::Cello,  EUIStateID::Test },
-        { EString::Bass,   EUIStateID::Home },
-        { EString::None,   EUIStateID::None }
+        { EMsg::Violin, EUIStateID::Home },
+        { EMsg::Viola,  EUIStateID::Home },
+        { EMsg::Cello,  EUIStateID::Test },
+        { EMsg::Bass,   EUIStateID::Home },
+        { EMsg::None,   EUIStateID::None }
     };
 #endif
 
@@ -104,7 +111,7 @@ void CUIStateMenuString::Enter(bool first /*= true*/) {
 #ifdef USE_STR_MENU_MAP
             mpWinMenu->Label(L"String Instruments");
 #else // !USE_STR_MENU_MAP
-            mpWinMenu->Label(EString::String);
+            mpWinMenu->Label(EMsg::String);
 #endif
         }
     }
@@ -114,8 +121,8 @@ void CUIStateMenuString::Exit(bool commit /*= false*/) {
     if (mpWinMenu == nullptr)
         return;
     if (commit) {
-        EString Label = mpWinMenu->Selection();
-        if (Label != EString::None)
+        EMsg Label = mpWinMenu->Selection();
+        if (Label != EMsg::None)
             Settings.Instrument(Label);
     }
 }
@@ -123,7 +130,7 @@ void CUIStateMenuString::Exit(bool commit /*= false*/) {
 //EUIStateID CUIStateMenuString::Event(EUIEvent event, void *pdata) {
 //}
 
-//EUIStateID CUIStateMenuString::Click(EStringID stringID) {
+//EUIStateID CUIStateMenuString::Click(EMsg msg) {
 //}
 
 //##############################################################################
@@ -143,11 +150,11 @@ void CUIStateMenuWind::Enter(bool first /*= true*/) {
     };
 #else // !USE_STR_MENU_MAP
     static const CStrIDMenuMap MenuMap[] {
-        { EString::Flute,   EUIStateID::Home },
-        { EString::Oboe,    EUIStateID::Home },
-        { EString::Bassoon, EUIStateID::Home },
-        { EString::Trumpet, EUIStateID::Home },
-        { EString::None,    EUIStateID::None }
+        { EMsg::Flute,   EUIStateID::Home },
+        { EMsg::Oboe,    EUIStateID::Home },
+        { EMsg::Bassoon, EUIStateID::Home },
+        { EMsg::Trumpet, EUIStateID::Home },
+        { EMsg::None,    EUIStateID::None }
     };
 #endif
 
@@ -157,7 +164,7 @@ void CUIStateMenuWind::Enter(bool first /*= true*/) {
 #ifdef USE_STR_MENU_MAP
             mpWinMenu->Label(L"Wind Instruments");
 #else // !USE_STR_MENU_MAP
-            mpWinMenu->Label(EString::Wind);
+            mpWinMenu->Label(EMsg::Wind);
 #endif
         }
     }
@@ -167,8 +174,8 @@ void CUIStateMenuWind::Exit(bool commit /*= false*/) {
     if (mpWinMenu == nullptr)
         return;
     if (commit) {
-        EString Label = mpWinMenu->Selection();
-        if (Label != EString::None)
+        EMsg Label = mpWinMenu->Selection();
+        if (Label != EMsg::None)
             Settings.Instrument(Label);
     }
 }
@@ -176,7 +183,7 @@ void CUIStateMenuWind::Exit(bool commit /*= false*/) {
 //EUIStateID CUIStateMenuWind::Event(EUIEvent event, void *pdata) {
 //}
 
-//EUIStateID CUIStateMenuWind::Click(EStringID stringID) {
+//EUIStateID CUIStateMenuWind::Click(EMsg msg) {
 //}
 
 //##############################################################################
@@ -195,10 +202,10 @@ void CUIStateMenuPercussion::Enter(bool first /*= true*/) {
     };
 #else // !USE_STR_MENU_MAP
     static const CStrIDMenuMap MenuMap[] {
-        { EString::Drum,       EUIStateID::Home },
-        { EString::Cymbal,     EUIStateID::Home },
-        { EString::Tambourine, EUIStateID::Home },
-        { EString::None,       EUIStateID::None }
+        { EMsg::Drum,       EUIStateID::Home },
+        { EMsg::Cymbal,     EUIStateID::Home },
+        { EMsg::Tambourine, EUIStateID::Home },
+        { EMsg::None,       EUIStateID::None }
     };
 #endif
 
@@ -208,7 +215,7 @@ void CUIStateMenuPercussion::Enter(bool first /*= true*/) {
 #ifdef USE_STR_MENU_MAP
             mpWinMenu->Label(L"Percussion Instruments");
 #else // !USE_STR_MENU_MAP
-            mpWinMenu->Label(EString::Percussion);
+            mpWinMenu->Label(EMsg::Percussion);
 #endif
         }
     }
@@ -218,8 +225,8 @@ void CUIStateMenuPercussion::Exit(bool commit /*= false*/) {
     if (mpWinMenu == nullptr)
         return;
     if (commit) {
-        EString Label = mpWinMenu->Selection();
-        if (Label != EString::None)
+        EMsg Label = mpWinMenu->Selection();
+        if (Label != EMsg::None)
             Settings.Instrument(Label);
     }
 }
@@ -227,5 +234,5 @@ void CUIStateMenuPercussion::Exit(bool commit /*= false*/) {
 //EUIStateID CUIStateMenuPercussion::Event(EUIEvent event, void *pdata) {
 //}
 
-//EUIStateID CUIStateMenuPercussion::Click(EStringID stringID) {
+//EUIStateID CUIStateMenuPercussion::Click(EMsg msg) {
 //}

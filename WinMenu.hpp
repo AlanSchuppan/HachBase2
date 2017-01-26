@@ -21,7 +21,7 @@ struct CStrMenuMap {
 //##############################################################################
 
 struct CStrIDMenuMap {
-    EString StringID;
+    EMsg Message;
     EUIStateID State;
 };
 
@@ -35,9 +35,11 @@ public:
     ~CWinMenu();
     void Menu(const CStrMenuMap *pmenuMap);
     void Menu(const CStrIDMenuMap *pmenuMap);
+    void Disable(const std::vector<bool> &disables);
+    void RowSelect(uint32_t ix);
     void Label(std::wstring label);
-    void Label(EString stringID);
-    EString Selection() const;
+    void Label(EMsg msg);
+    EMsg Selection() const;
 
 //    void Enter(bool first = true) override;
 
@@ -48,7 +50,7 @@ private slots:
 
 private:
     Ui::CWinMenu *ui;
-    std::vector<EString> mLabels;
+    std::vector<EMsg> mLabels;
     std::vector<EUIStateID> mUIStates;
 };
 

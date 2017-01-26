@@ -8,10 +8,10 @@ static const wchar_t *English[] = {
 static const int EnglishCount =
     sizeof(English) / sizeof(*English);
 
-CLang::CLang() : mStrings(English) {
+CLang::CLang() : mMessages(English) {
 }
 
-std::wstring CLang::String(EString stringID) {
-    int Ix = static_cast<int>(stringID);
-    return (Ix >= 0 && Ix < EnglishCount) ? mStrings[Ix] : L"???";
+std::wstring CLang::Message(EMsg msg) {
+    int Ix = static_cast<int>(msg);
+    return (Ix >= 0 && Ix < EnglishCount) ? mMessages[Ix] : L"???";
 }

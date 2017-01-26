@@ -1,6 +1,6 @@
 #include <iostream>
+#include <sstream>
 
-//#include "WinHome.hpp"
 #include "WinHome.hpp"
 #include "WinMenu.hpp"
 //#include "WinList.hpp"
@@ -15,7 +15,7 @@ using namespace std;
 //##############################################################################
 //##############################################################################
 
-CSettings::CSettings() : mInstrument(EString::Violin) {
+CSettings::CSettings() : mInstrument(EMsg::Violin) {
 }
 
 CSettings Settings;
@@ -80,8 +80,15 @@ CBaseWidget *CUIContext::Create(EUIStateID stateID,
 //        break;
 
     default:
-        throw std::runtime_error("CUIState::Create(): "
-                                 "UI state is not implemented.");
+        {
+            std::stringstream Message;
+            Message << "CUIState::Create(): UI state \""
+                    << UIStateName(stateID)
+                    << "("
+                    << static_cast<uint32_t>(stateID)
+                    << ")\" is not implemented.";
+            throw std::runtime_error(Message.str());
+        }
     }
 
     if (pWidget != nullptr) {

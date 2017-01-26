@@ -15,18 +15,18 @@
 //##############################################################################
 
 class CSettings {
-    EString mInstrument;
+    EMsg mInstrument;
 public:
     CSettings();
-    EString Instrument() const;
-    void    Instrument(EString instrument);
+    EMsg Instrument() const;
+    void    Instrument(EMsg instrument);
 };
 
-inline EString CSettings::Instrument() const {
+inline EMsg CSettings::Instrument() const {
     return mInstrument;
 }
 
-inline void CSettings::Instrument(EString instrument) {
+inline void CSettings::Instrument(EMsg instrument) {
     mInstrument = instrument;
 }
 
