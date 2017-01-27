@@ -1,6 +1,7 @@
+#include <QApplication>
+
 #include "UIContext.hpp"
 #include "MainWidget.hpp"
-#include <QApplication>
 
 int main(int argc, char *argv[]) {
     static const int Width = 800;

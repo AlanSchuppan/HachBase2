@@ -9,6 +9,7 @@
 #include <new>
 #include <iostream>
 #include <unistd.h>
+
 #include "Singleton.hpp"
 
 #define LOG_INFO // Enable LogInfo()

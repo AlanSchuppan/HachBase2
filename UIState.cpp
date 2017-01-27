@@ -1,5 +1,6 @@
 #include <stdint.h>
 
+#include "UIContext.hpp"
 #include "UIState.hpp"
 
 //##############################################################################
@@ -54,6 +55,10 @@ void CUIState::Enter(bool /*first = true*/) {
 }
 
 void CUIState::Exit(bool /*commit = false*/) {
+}
+
+void CUIState::UIState(EUIState uiState, bool commit) {
+    UIContext.Get().UIState(uiState, commit);
 }
 
 EUIState CUIState::Event(EUIEvent /*event*/, void * /*pdata*/) {

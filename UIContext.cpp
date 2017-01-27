@@ -3,30 +3,17 @@
 
 #include "WinHome.hpp"
 #include "WinMenu.hpp"
-//#include "WinList.hpp"
-#include "UIState.hpp"
 #include "UIStates.hpp"
 #include "UIContext.hpp"
 
 using namespace std;
 
 //##############################################################################
-// CSettings
-//##############################################################################
-//##############################################################################
-
-CSettings::CSettings() : mInstrument(EMsg::Violin) {
-}
-
-CSettings Settings;
-
-//##############################################################################
 // CUIContext
 //##############################################################################
 //##############################################################################
 
-CBaseWidget *CUIContext::Create(EUIState uiState,
-                                     CBaseWidget *pprevious) {
+CBaseWidget *CUIContext::Create(EUIState uiState, CBaseWidget *pprevious) {
     CBaseWidget *pWidget = nullptr;
 
     switch (uiState) {

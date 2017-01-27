@@ -22,7 +22,8 @@ SOURCES += \
     UIStates.cpp \
     Main.cpp \
     WinHome.cpp \
-    MainWidget.cpp
+    MainWidget.cpp \
+    Settings.cpp
 
 HEADERS  += \
     Singleton.hpp \
@@ -33,7 +34,8 @@ HEADERS  += \
     UIState.hpp \
     UIStates.hpp \
     WinHome.hpp \
-    MainWidget.hpp
+    MainWidget.hpp \
+    Settings.hpp
 
 FORMS    += \
     WinMenu.ui \

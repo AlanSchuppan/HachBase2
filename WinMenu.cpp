@@ -1,8 +1,5 @@
 #include "WinMenu.hpp"
 #include "ui_WinMenu.h"
-#include "UIState.hpp"
-#include "Lang.hpp"
-#include "UIContext.hpp"
 
 CWinMenu::CWinMenu(CUIState *puiState, QWidget *parent) :
     CBaseWidget(puiState, parent),
@@ -75,14 +72,15 @@ void CWinMenu::Label(EMsg msg) {
 
 void CWinMenu::on_btnOk_clicked() {
     size_t Row = static_cast<size_t>(ui->lwMenu->currentRow());
-    if (Row < mUIStates.size()) {
+    if (Row < mUIStates.size() && mpUIState != nullptr) {
         EUIState UIState = mUIStates[Row];
-        UIContext.Get().UIState(UIState, true); // true => commit
+        mpUIState->UIState(UIState, true); // true => commit
     }
 }
 
 void CWinMenu::on_btnCancel_clicked() {
-    UIContext.Get().UIState(EUIState::Previous);
+    if (mpUIState != nullptr)
+        mpUIState->UIState(EUIState::Previous);
 }
 
 void EnterHandler(Ui::CWinMenu */*pUI*/, bool /*first*/) {

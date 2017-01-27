@@ -1,6 +1,4 @@
 #include "WinHome.hpp"
-#include "UIContext.hpp"
-#include "Lang.hpp"
 #include "ui_WinHome.h"
 
 CWinHome::CWinHome(CUIState *puiState, QWidget *parent) :
@@ -16,7 +14,8 @@ CWinHome::~CWinHome() {
 }
 
 void CWinHome::on_btnStart_clicked() {
-    UIContext.Get().UIState(EUIState::Inst);
+    if (mpUIState != nullptr)
+        mpUIState->UIState(EUIState::Inst);
 }
 
 void CWinHome::Instrument(EMsg instrument) {

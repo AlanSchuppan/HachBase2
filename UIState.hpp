@@ -43,6 +43,7 @@ public:
 
     virtual void Enter(bool first = true);
     virtual void Exit(bool commit = false);
+    virtual void UIState(EUIState uiState, bool commit = false);
     virtual EUIState Event(EUIEvent event, void *pdata);
     virtual EUIState Click(EMsg msg);
 };
