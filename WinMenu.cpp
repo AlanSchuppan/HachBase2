@@ -12,7 +12,7 @@ CWinMenu::~CWinMenu() {
 }
 
 void CWinMenu::Menu(const CStrMenuMap *pmenuMap) {
-    ui->lwMenu->clear();;
+    ui->lwMenu->clear();
     mUIStates.clear();
     while (pmenuMap->Name != nullptr) {
         ui->lwMenu->addItem(pmenuMap->Name);

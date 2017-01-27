@@ -1,6 +1,9 @@
 #ifndef SETTINGS_HPP
 #define SETTINGS_HPP
 
+#include <string>
+
+#include "Singleton.hpp"
 #include "Lang.hpp"
 
 //##############################################################################
@@ -8,10 +11,11 @@
 //##############################################################################
 //##############################################################################
 
-class CSettings {
+class CSettings : public CSingleton {
     EMsg mInstrument;
 public:
-    CSettings();
+    static CSingleton *CreateMe(std::string &name);
+    CSettings(const std::string &name);
     EMsg Instrument() const;
     void    Instrument(EMsg instrument);
 };
@@ -24,7 +28,7 @@ inline void CSettings::Instrument(EMsg instrument) {
     mInstrument = instrument;
 }
 
-extern CSettings Settings;
+extern TSingletonHost<CSettings> Settings;
 
 //##############################################################################
 

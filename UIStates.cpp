@@ -10,9 +10,8 @@ CUIStateHome::CUIStateHome(EUIState uiState) :
 }
 
 void CUIStateHome::Enter(bool /*first = true*/) {
-    if (mpWinHome == nullptr)
-        return;
-    mpWinHome->Instrument(Settings.Instrument());
+    if (mpWinHome != nullptr)
+        mpWinHome->Instrument(Settings.Get().Instrument());
 }
 
 //void CUIStateHome::Exit(bool commit = false) {
@@ -123,7 +122,7 @@ void CUIStateMenuString::Exit(bool commit /*= false*/) {
     if (commit) {
         EMsg Label = mpWinMenu->Selection();
         if (Label != EMsg::None)
-            Settings.Instrument(Label);
+            Settings.Get().Instrument(Label);
     }
 }
 
@@ -176,7 +175,7 @@ void CUIStateMenuWind::Exit(bool commit /*= false*/) {
     if (commit) {
         EMsg Label = mpWinMenu->Selection();
         if (Label != EMsg::None)
-            Settings.Instrument(Label);
+            Settings.Get().Instrument(Label);
     }
 }
 
@@ -227,7 +226,7 @@ void CUIStateMenuPercussion::Exit(bool commit /*= false*/) {
     if (commit) {
         EMsg Label = mpWinMenu->Selection();
         if (Label != EMsg::None)
-            Settings.Instrument(Label);
+            Settings.Get().Instrument(Label);
     }
 }
 

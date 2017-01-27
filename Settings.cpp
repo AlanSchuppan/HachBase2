@@ -5,9 +5,15 @@
 //##############################################################################
 //##############################################################################
 
-CSettings::CSettings() : mInstrument(EMsg::Violin) {
+CSingleton *CSettings::CreateMe(std::string &name) {
+    name = "Settings";
+    return new CSettings(name);
 }
 
-CSettings Settings;
+CSettings::CSettings(const std::string &name) :
+    CSingleton(name), mInstrument(EMsg::Violin) {
+}
+
+TSingletonHost<CSettings> Settings(CSettings::CreateMe);
 
 //##############################################################################
