@@ -17,7 +17,7 @@ public:
     void Enter(bool first = true) override;
 //    void Exit(bool commit = false) override;
 //    EUIState Event(EUIEvent event, void *pdata) override;
-//    EUIState Click(EStringID stringID) override;
+//    EUIState Click(EMsg msg) override;
 };
 
 inline void CUIStateHome::Widget(CBaseWidget *pwidget) {
@@ -36,7 +36,7 @@ public:
     void Enter(bool first = true) override;
 //    void Exit(bool commit = false) override;
 //    EUIState Event(EUIEvent event, void *pdata) override;
-//    EUIState Click(EStringID stringID) override;
+//    EUIState Click(EMsg msg) override;
 };
 
 inline void CUIStateMenuInst::Widget(CBaseWidget *pwidget) {
@@ -55,7 +55,7 @@ public:
     void Enter(bool first = true) override;
     void Exit(bool commit = false) override;
 //    EUIState Event(EUIEvent event, void *pdata) override;
-//    EUIState Click(EStringID stringID) override;
+//    EUIState Click(EMsg msg) override;
 };
 
 inline void CUIStateMenuString::Widget(CBaseWidget *pwidget) {
@@ -74,7 +74,7 @@ public:
     void Enter(bool first = true) override;
     void Exit(bool commit = false) override;
 //    EUIState Event(EUIEvent event, void *pdata) override;
-//    EUIState Click(EStringID stringID) override;
+//    EUIState Click(EMsg msg) override;
 };
 
 inline void CUIStateMenuWind::Widget(CBaseWidget *pwidget) {
@@ -93,7 +93,7 @@ public:
     void Enter(bool first = true) override;
     void Exit(bool commit = false) override;
 //    EUIState Event(EUIEvent event, void *pdata) override;
-//    EUIState Click(EStringID stringID) override;
+//    EUIState Click(EMsg msg) override;
 };
 
 inline void CUIStateMenuPercussion::Widget(CBaseWidget *pwidget) {
