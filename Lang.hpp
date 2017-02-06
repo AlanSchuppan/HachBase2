@@ -17,6 +17,9 @@ class CLang {
   //static const wchar_t *English[];
   const wchar_t **mMessages;
 public:
+    static std::wstring UTF8ToWStr(const std::string &utf8);
+    static std::string WStrToUTF8(const std::wstring &wstr);
+
     CLang();
     std::wstring Message(EMsg msg);
 };
