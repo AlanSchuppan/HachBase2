@@ -4,7 +4,7 @@
 #include <QWidget>
 
 namespace Ui {
-class MainWidget;
+    class MainWidget;
 }
 
 class MainWidget : public QWidget {

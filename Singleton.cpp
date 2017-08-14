@@ -100,7 +100,7 @@ CSingleton &CSingletonHost::Get() {
     mBusy = 1; // Block other threads from creating a singleton.
     if (mpSingleton == nullptr) {
         std::string Name;
-        mpSingleton  = mCreate(Name);
+        mpSingleton = mCreate(Name);
         if (mpSingleton == nullptr) {
             std::cerr << "CSingletonHost::Get(): Could not create singleton \""
                       << Name << "\"." << std::endl;
