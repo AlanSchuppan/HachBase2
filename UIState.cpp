@@ -27,6 +27,8 @@ static const CStateNameMap StateNameMap[] = {
 static const uint32_t cStateNameMapCount =
     sizeof(StateNameMap) / sizeof(*StateNameMap);
 
+//------------------------------------------------------------------------------
+//
 const char *UIStateName(EUIState stateID) {
     static_assert(static_cast<uint32_t>(EUIState::Count)==cStateNameMapCount,
                   "Potentially incomplete table: StateNameMap");
@@ -41,30 +43,46 @@ const char *UIStateName(EUIState stateID) {
 //##############################################################################
 //##############################################################################
 
+//------------------------------------------------------------------------------
+//
 CUIState::CUIState(EUIState uiState) : mUIState(uiState) {
 }
 
+//------------------------------------------------------------------------------
+//
 CUIState::~CUIState() {
 }
 
+//------------------------------------------------------------------------------
+//
 const char *CUIState::Name() const {
     return UIStateName(mUIState);
 }
 
+//------------------------------------------------------------------------------
+//
 void CUIState::Enter(bool /*first = true*/) {
 }
 
+//------------------------------------------------------------------------------
+//
 void CUIState::Exit(bool /*commit = false*/) {
 }
 
+//------------------------------------------------------------------------------
+//
 void CUIState::UIState(EUIState uiState, bool commit) {
     UIContext.Get().UIState(uiState, commit);
 }
 
+//------------------------------------------------------------------------------
+//
 EUIState CUIState::Event(EUIEvent /*event*/, void * /*pdata*/) {
     return EUIState::None;
 }
 
+//------------------------------------------------------------------------------
+//
 EUIState CUIState::Click(EMsg /*msg*/) {
     return EUIState::None;
 }

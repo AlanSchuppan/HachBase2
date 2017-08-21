@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+//##############################################################################
+
 namespace Ui {
     class MainWidget;
 }
@@ -20,5 +22,7 @@ private slots:
 private:
     Ui::MainWidget *ui;
 };
+
+//##############################################################################
 
 #endif // MAINWIDGET_HPP

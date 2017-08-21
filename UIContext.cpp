@@ -13,6 +13,8 @@ using namespace std;
 //##############################################################################
 //##############################################################################
 
+//------------------------------------------------------------------------------
+//
 CBaseWidget *CUIContext::Create(EUIState uiState, CBaseWidget *pprevious) {
     CBaseWidget *pWidget = nullptr;
 
@@ -22,7 +24,7 @@ CBaseWidget *CUIContext::Create(EUIState uiState, CBaseWidget *pprevious) {
             CUIStateHome *pUIState =
                 new CUIStateHome(uiState);
             pWidget = new CWinHome(pUIState, pprevious);
-            pUIState->Widget(pWidget);
+//            pUIState->Widget(pWidget);
         }
         break;
 
@@ -31,7 +33,7 @@ CBaseWidget *CUIContext::Create(EUIState uiState, CBaseWidget *pprevious) {
             CUIStateMenuInst *pUIState =
                 new CUIStateMenuInst(uiState);
             pWidget = new CWinMenu(pUIState, pprevious);
-            pUIState->Widget(pWidget);
+//            pUIState->Widget(pWidget);
         }
         break;
 
@@ -40,7 +42,7 @@ CBaseWidget *CUIContext::Create(EUIState uiState, CBaseWidget *pprevious) {
             CUIStateMenuString *pUIState =
                 new CUIStateMenuString(uiState);
             pWidget = new CWinMenu(pUIState, pprevious);
-            pUIState->Widget(pWidget);
+//            pUIState->Widget(pWidget);
         }
         break;
 
@@ -49,7 +51,7 @@ CBaseWidget *CUIContext::Create(EUIState uiState, CBaseWidget *pprevious) {
             CUIStateMenuWind *pUIState =
                 new CUIStateMenuWind(uiState);
             pWidget = new CWinMenu(pUIState, pprevious);
-            pUIState->Widget(pWidget);
+//            pUIState->Widget(pWidget);
         }
         break;
 
@@ -58,7 +60,7 @@ CBaseWidget *CUIContext::Create(EUIState uiState, CBaseWidget *pprevious) {
             CUIStateMenuPercussion *pUIState =
                 new CUIStateMenuPercussion(uiState);
             pWidget = new CWinMenu(pUIState, pprevious);
-            pUIState->Widget(pWidget);
+//            pUIState->Widget(pWidget);
         }
         break;
 
@@ -88,18 +90,26 @@ CBaseWidget *CUIContext::Create(EUIState uiState, CBaseWidget *pprevious) {
     return pWidget;
 }
 
+//------------------------------------------------------------------------------
+//
 EUIState CUIContext::UIState(CBaseWidget *pwidget) {
     return pwidget->UIState(); // Result is valid even when pwidget is null
 }
 
+//------------------------------------------------------------------------------
+//
 CUIContext::CUIContext(const std::string &name,
                                  CBaseWidget *pwidget) :
     CSingleton(name), mpWidget(pwidget) {
 }
 
+//------------------------------------------------------------------------------
+//
 CUIContext::~CUIContext() {
 }
 
+//------------------------------------------------------------------------------
+//
 CBaseWidget *CUIContext::UIStateFind(EUIState uiState) {
     CBaseWidget *pWidget = mpWidget;
     EUIState StateID =
@@ -112,6 +122,8 @@ CBaseWidget *CUIContext::UIStateFind(EUIState uiState) {
     return (StateID == uiState) ? pWidget : nullptr;
 }
 
+//------------------------------------------------------------------------------
+//
 CBaseWidget *CUIContext::UIState(EUIState uiState, bool commit) {
     EUIState UIState =
         (mpWidget != nullptr) ? mpWidget->UIState() : EUIState::None;
@@ -156,6 +168,8 @@ CBaseWidget *CUIContext::UIState(EUIState uiState, bool commit) {
     return mpWidget;
 }
 
+//------------------------------------------------------------------------------
+//
 EUIState CUIContext::UIStatePrevious() {
     EUIState CurrentState =
         mpWidget->UIState(); // Null mpWidget returns EUIState::None
@@ -167,11 +181,15 @@ EUIState CUIContext::UIStatePrevious() {
     return (pPrevWidget != nullptr) ? pPrevWidget->UIState() : EUIState::None;
 }
 
+//------------------------------------------------------------------------------
+//
 void CUIContext::Event(EUIEvent event, void *pdata) {
     if (mpWidget != nullptr)
         mpWidget->Event(event, pdata);
 }
 
+//------------------------------------------------------------------------------
+//
 void CUIContext::Dump(int id) {
     cout << "State " << id << ":" << endl;
     EUIState StateID = EUIState::None;
@@ -184,9 +202,13 @@ void CUIContext::Dump(int id) {
     } while (StateID != EUIState::Home && StateID != EUIState::None);
 }
 
+//------------------------------------------------------------------------------
+//
 CSingleton *CUIContext::CreateMe(std::string &name) {
     name = "UIContext";
     return new CUIContext(name);
 }
 
+//------------------------------------------------------------------------------
+//
 TSingletonHost<CUIContext> UIContext(CUIContext::CreateMe);

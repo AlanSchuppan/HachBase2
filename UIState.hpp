@@ -9,7 +9,7 @@
 //##############################################################################
 
 enum class EUIEvent {
-    None, Count
+    None, BtnMenu, BtnBack, BtnUp, BtnDown, BtnLeft, BtnRight, BtnOk, Count
 };
 
 const char *UIEventName(EUIEvent event);
@@ -28,21 +28,6 @@ enum class EUIState {
 const char *UIStateName(EUIState stateID);
 
 //##############################################################################
-// CUIStateFuncBase
-//##############################################################################
-//##############################################################################
-
-//class CUIStateFuncBase {
-//public:
-//    CUIStateFuncBase();
-//    virtual void Enter(bool first = true);
-//    virtual void Exit(bool commit = false);
-//    //virtual void UIState(EUIState uiState, bool commit = false);
-//    virtual EUIState Event(EUIEvent event, void *pdata);
-//    //virtual EUIState Click(EMsg msg);
-//};
-
-//##############################################################################
 // CUIState
 //##############################################################################
 //##############################################################################
@@ -59,12 +44,14 @@ public:
     virtual void Enter(bool first = true);
     virtual void Exit(bool commit = false);
     virtual void UIState(EUIState uiState, bool commit = false);
-    virtual EUIState Event(EUIEvent event, void *pdata);
+    virtual EUIState Event(EUIEvent event, void *pdata = nullptr);
     virtual EUIState Click(EMsg msg);
 };
 
 inline EUIState CUIState::UIState() const {
     return mUIState;
 }
+
+//##############################################################################
 
 #endif // UISTATE_HPP

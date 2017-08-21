@@ -1,104 +1,131 @@
 #ifndef CUISTATES_HPP
 #define CUISTATES_HPP
 
+#include <vector>
+#include <string>
+
 #include "UIState.hpp"
 #include "WinHome.hpp"
 #include "WinMenu.hpp"
 
 //##############################################################################
 
+class IMenu {
+public:
+    static const uint8_t flgNone = 0, flgDisabled = 1, flgSelected = 2;
+    virtual void Items(std::vector<std::wstring> &names,
+                       std::vector<uint8_t> &flags) = 0;
+    virtual size_t SelectedIx() const = 0;
+    virtual void   SelectedIx(size_t ix) = 0;
+};
+
+//##############################################################################
+
+struct CMenuItem {
+    EMsg      Text;
+    wchar_t *pText;
+    EUIState NextState;
+    uint8_t  Flags;
+};
+
+class CMenuBase : public IMenu {
+public:
+    CMenuBase();
+
+    // IMenu
+    void Items(std::vector<std::wstring> &names,
+                           std::vector<uint8_t> &flags) override;
+    virtual size_t SelectedIx() const;
+    virtual void   SelectedIx(size_t ix);
+
+protected:
+    const CMenuItem  *mpMenuItems;
+    size_t mCount;
+    size_t mSelectedIx;
+
+    void Load(const CMenuItem *pmenuItems);
+};
+
+//##############################################################################
+
 class CUIStateHome : public CUIState {
-    CWinHome *mpWinHome;
 public:
     CUIStateHome(EUIState uiState);
 
-    void Widget(CBaseWidget *pwidget);
-
+    // CUIState
     void Enter(bool first = true) override;
 //    void Exit(bool commit = false) override;
 //    EUIState Event(EUIEvent event, void *pdata) override;
 //    EUIState Click(EMsg msg) override;
-};
 
-inline void CUIStateHome::Widget(CBaseWidget *pwidget) {
-    mpWinHome = dynamic_cast<CWinHome *>(pwidget);
-}
+    EMsg Instrument() const;
+};
 
 //##############################################################################
 
-class CUIStateMenuInst : public CUIState {
-    CWinMenu *mpWinMenu;
+class CUIStateMenuInst : public CUIState, public CMenuBase {
 public:
     CUIStateMenuInst(EUIState uiState);
 
-    void Widget(CBaseWidget *pwidget);
+//    void Widget(CBaseWidget *pwidget);
 
+    // CUIState
     void Enter(bool first = true) override;
 //    void Exit(bool commit = false) override;
-//    EUIState Event(EUIEvent event, void *pdata) override;
+    EUIState Event(EUIEvent event, void *pdata) override;
 //    EUIState Click(EMsg msg) override;
-};
 
-inline void CUIStateMenuInst::Widget(CBaseWidget *pwidget) {
-    mpWinMenu = dynamic_cast<CWinMenu *>(pwidget);
-}
+    // IMenu
+//    void Items(std::vector<std::wstring> &names,
+//               std::vector<uint8_t> &flags) override;
+//    size_t  SelectedIx() const override;
+//    void    SelectedIx(size_t ix) override;
+};
 
 //##############################################################################
 
-class CUIStateMenuString : public CUIState {
-    CWinMenu *mpWinMenu;
+class CUIStateMenuString : public CUIState, public CMenuBase {
 public:
     CUIStateMenuString(EUIState uiState);
 
-    void Widget(CBaseWidget *pwidget);
-
+    // CUIState
     void Enter(bool first = true) override;
     void Exit(bool commit = false) override;
-//    EUIState Event(EUIEvent event, void *pdata) override;
+    EUIState Event(EUIEvent event, void *pdata) override;
 //    EUIState Click(EMsg msg) override;
-};
 
-inline void CUIStateMenuString::Widget(CBaseWidget *pwidget) {
-    mpWinMenu = dynamic_cast<CWinMenu *>(pwidget);
-}
+    // IMenu
+//    void Items(std::vector<std::wstring> &names,
+//               std::vector<uint8_t> &flags) override;
+//    size_t  SelectedIx() const override;
+//    void    SelectedIx(size_t ix) override;
+};
 
 //##############################################################################
 
-class CUIStateMenuWind : public CUIState {
-    CWinMenu *mpWinMenu;
+class CUIStateMenuWind : public CUIState, public CMenuBase {
 public:
     CUIStateMenuWind(EUIState uiState);
 
-    void Widget(CBaseWidget *pwidget);
-
+    // CUIState
     void Enter(bool first = true) override;
     void Exit(bool commit = false) override;
-//    EUIState Event(EUIEvent event, void *pdata) override;
+    EUIState Event(EUIEvent event, void *pdata) override;
 //    EUIState Click(EMsg msg) override;
 };
-
-inline void CUIStateMenuWind::Widget(CBaseWidget *pwidget) {
-    mpWinMenu = dynamic_cast<CWinMenu *>(pwidget);
-}
 
 //##############################################################################
 
-class CUIStateMenuPercussion : public CUIState {
-    CWinMenu *mpWinMenu;
+class CUIStateMenuPercussion : public CUIState, public CMenuBase {
 public:
     CUIStateMenuPercussion(EUIState uiState);
 
-    void Widget(CBaseWidget *pwidget);
-
+    // CUIState
     void Enter(bool first = true) override;
     void Exit(bool commit = false) override;
-//    EUIState Event(EUIEvent event, void *pdata) override;
+    EUIState Event(EUIEvent event, void *pdata) override;
 //    EUIState Click(EMsg msg) override;
 };
-
-inline void CUIStateMenuPercussion::Widget(CBaseWidget *pwidget) {
-    mpWinMenu = dynamic_cast<CWinMenu *>(pwidget);
-}
 
 //##############################################################################
 

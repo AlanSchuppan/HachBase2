@@ -3,15 +3,74 @@
 
 //#define USE_STR_MENU_MAP
 
+struct CMenuMapOld {
+    EMsg Message;
+    EUIState UIState;
+    bool Disabled;
+};
+
+//##############################################################################
+
+//------------------------------------------------------------------------------
+//
+CMenuBase::CMenuBase() : mpMenuItems(nullptr), mCount(0), mSelectedIx(-1) {
+}
+
+//------------------------------------------------------------------------------
+//
+void CMenuBase::Load(const CMenuItem *pmenuItems) {
+    mCount = 0;
+    mSelectedIx = -1;
+    mpMenuItems = pmenuItems;
+    if (pmenuItems == nullptr)
+        return;
+    while (pmenuItems->Text != EMsg::None || pmenuItems->pText != nullptr) {
+        if (mSelectedIx > mCount && (pmenuItems->Flags & flgSelected) != 0)
+                mSelectedIx = mCount;
+        ++mCount;
+        ++pmenuItems;
+    }
+}
+
+//------------------------------------------------------------------------------
+//
+void CMenuBase::Items(std::vector<std::wstring> &names,
+                      std::vector<uint8_t> &flags) {
+    names.clear();
+    flags.clear();
+
+    CLang Lang;
+    const CMenuItem *pMenuItem = mpMenuItems;
+    while (pMenuItem->Text != EMsg::None || pMenuItem->pText != nullptr) {
+        if (pMenuItem->pText != nullptr)
+            names.push_back(pMenuItem->pText);
+        else
+            names.push_back(Lang.Message(pMenuItem->Text));
+        flags.push_back(pMenuItem->Flags);
+        ++pMenuItem;
+    }
+}
+
+//------------------------------------------------------------------------------
+//
+size_t CMenuBase::SelectedIx() const {
+    return mSelectedIx;
+}
+
+//------------------------------------------------------------------------------
+//
+void   CMenuBase::SelectedIx(size_t ix) {
+    mSelectedIx = ix;
+}
+
 //##############################################################################
 
 CUIStateHome::CUIStateHome(EUIState uiState) :
-    CUIState(uiState), mpWinHome(nullptr) {
+    CUIState(uiState) {
 }
 
 void CUIStateHome::Enter(bool /*first = true*/) {
-    if (mpWinHome != nullptr)
-        mpWinHome->Instrument(Settings.Get().Instrument());
+    Settings.Get().Instrument();
 }
 
 //void CUIStateHome::Exit(bool commit = false) {
@@ -23,215 +82,222 @@ void CUIStateHome::Enter(bool /*first = true*/) {
 //EUIState CUIStateHome::Click(ELng msg) {
 //}
 
+EMsg CUIStateHome::Instrument() const {
+    return Settings.Get().Instrument();
+}
+
 //##############################################################################
 
-CUIStateMenuInst::CUIStateMenuInst(EUIState uiState) :
-    CUIState(uiState), mpWinMenu(nullptr) {
+CUIStateMenuInst::CUIStateMenuInst(EUIState uiState) : CUIState(uiState) {
 }
 
 void CUIStateMenuInst::Enter(bool first /*= true*/) {
-#ifdef USE_STR_MENU_MAP
-    static const CStrMenuMap MenuMap[] {
-        { "String",     EUIState::InstString     },
-        { "Wind",       EUIState::InstWind       },
-        { "Percussion", EUIState::InstPercussion },
-        { "Test",       EUIState::Test           },
-        { nullptr,      EUIState::None           }
+    static const CMenuItem MenuItems[] = {
+        { EMsg::String,     nullptr, EUIState::InstString,     IMenu::flgSelected },
+        { EMsg::Wind,       nullptr, EUIState::InstWind,       IMenu::flgNone     },
+        { EMsg::Percussion, nullptr, EUIState::InstPercussion, IMenu::flgNone     },
+        { EMsg::Test,       nullptr, EUIState::Test,           IMenu::flgDisabled },
+        { EMsg::None,       nullptr, EUIState::None,           IMenu::flgNone     }
     };
-#else // !USE_STR_MENU_MAP
-    static const CMsgMenuMap MenuMap[] {
-        { EMsg::String,     EUIState::InstString     },
-        { EMsg::Wind,       EUIState::InstWind       },
-        { EMsg::Percussion, EUIState::InstPercussion },
-        { EMsg::Test,       EUIState::Test           },
-        { EMsg::None,       EUIState::None           }
-    };
-#endif
 
-    if (first) {
-        if (mpWinMenu != nullptr) {
-            mpWinMenu->Menu(MenuMap);
-#ifdef USE_STR_MENU_MAP
-            mpWinMenu->Label(L"Instrument Type");
-#else // !USE_STR_MENU_MAP
-            CLang Lang;
-            mpWinMenu->Label(EMsg::InstrumentType);
-
-            std::vector<bool> Disables;
-            const CMsgMenuMap *pMenuMap = MenuMap;
-            while (pMenuMap->Message != EMsg::None) {
-                Disables.push_back(pMenuMap->Message == EMsg::Test);
-                ++pMenuMap;
-            }
-            mpWinMenu->Disable(Disables);
-            mpWinMenu->RowSelect(1);
-#endif
-        }
-    }
+    if (first)
+        Load(MenuItems);
 }
 
+//------------------------------------------------------------------------------
+//
 //void CUIStateMenuInst::Exit(bool commit = false) {
 //}
 
-//EUIState CUIStateMenuInst::Event(EUIEvent event, void *pdata) {
-//}
+//------------------------------------------------------------------------------
+//
+EUIState CUIStateMenuInst::Event(EUIEvent event, void *pdata) {
+    switch(event) {
+    case EUIEvent::BtnBack:
+        UIState(EUIState::Previous, false);
+        break;
+
+    case EUIEvent::BtnOk:
+        if (mSelectedIx < mCount)
+            UIState(mpMenuItems[mSelectedIx].NextState, true);
+        break;
+
+    default:
+        break;
+    }
+
+    return EUIState::None;
+}
 
 //EUIState CUIStateMenuInst::Click(EMsg msg) {
 //}
 
 //##############################################################################
 
-CUIStateMenuString::CUIStateMenuString(EUIState uiState) :
-    CUIState(uiState), mpWinMenu(nullptr) {
+//------------------------------------------------------------------------------
+//
+CUIStateMenuString::CUIStateMenuString(EUIState uiState) : CUIState(uiState) {
 }
 
+//------------------------------------------------------------------------------
+//
 void CUIStateMenuString::Enter(bool first /*= true*/) {
-#ifdef USE_STR_MENU_MAP
-    static const CStrMenuMap MenuMap[] {
-        { "Violin", EUIState::Home },
-        { "Viola",  EUIState::Home },
-        { "Cello",  EUIState::Test },
-        { "Bass",   EUIState::Home },
-        { nullptr,  EUIState::None }
+    static const CMenuItem MenuItems[] = {
+        { EMsg::Violin, nullptr, EUIState::Home, IMenu::flgSelected },
+        { EMsg::Viola,  nullptr, EUIState::Home, IMenu::flgNone     },
+        { EMsg::Cello,  nullptr, EUIState::Test, IMenu::flgNone     },
+        { EMsg::Bass,   nullptr, EUIState::Home, IMenu::flgNone     },
+        { EMsg::None,   nullptr, EUIState::None, IMenu::flgNone      }
     };
-#else // !USE_STR_MENU_MAP
-    static const CMsgMenuMap MenuMap[] {
-        { EMsg::Violin, EUIState::Home },
-        { EMsg::Viola,  EUIState::Home },
-        { EMsg::Cello,  EUIState::Home },
-        { EMsg::Bass,   EUIState::Home },
-        { EMsg::None,   EUIState::None }
-    };
-#endif
 
-    if (first) {
-        if (mpWinMenu != nullptr) {
-            mpWinMenu->Menu(MenuMap);
-#ifdef USE_STR_MENU_MAP
-            mpWinMenu->Label(L"String Instruments");
-#else // !USE_STR_MENU_MAP
-            mpWinMenu->Label(EMsg::String);
-#endif
-        }
-    }
+    if (first)
+        Load(MenuItems);
 }
 
+//------------------------------------------------------------------------------
+//
 void CUIStateMenuString::Exit(bool commit /*= false*/) {
-    if (mpWinMenu == nullptr)
-        return;
-    if (commit) {
-        EMsg Label = mpWinMenu->Selection();
+    if (commit && mSelectedIx < mCount) {
+        EMsg Label = mpMenuItems[mSelectedIx].Text;
         if (Label != EMsg::None)
             Settings.Get().Instrument(Label);
     }
 }
 
-//EUIState CUIStateMenuString::Event(EUIEvent event, void *pdata) {
-//}
+EUIState CUIStateMenuString::Event(EUIEvent event, void *pdata) {
+    switch(event) {
+    case EUIEvent::BtnBack:
+        UIState(EUIState::Previous, false);
+        break;
 
+    case EUIEvent::BtnOk:
+        if (mSelectedIx < mCount)
+            UIState(mpMenuItems[mSelectedIx].NextState, true);
+        break;
+
+    default:
+        break;
+    }
+
+    return EUIState::None;
+}
+
+//------------------------------------------------------------------------------
+//
 //EUIState CUIStateMenuString::Click(EMsg msg) {
 //}
 
 //##############################################################################
 
+//------------------------------------------------------------------------------
+//
 CUIStateMenuWind::CUIStateMenuWind(EUIState uiState) :
-    CUIState(uiState), mpWinMenu(nullptr) {
+    CUIState(uiState) {
 }
 
+//------------------------------------------------------------------------------
+//
 void CUIStateMenuWind::Enter(bool first /*= true*/) {
-#ifdef USE_STR_MENU_MAP
-    static const CStrMenuMap MenuMap[] {
-        { "Flute",   EUIState::Home },
-        { "Oboe",    EUIState::Home },
-        { "Bassoon", EUIState::Home },
-        { "Trumpet", EUIState::Home },
-        { nullptr,   EUIState::None }
+    static const CMenuItem MenuItems[] = {
+        { EMsg::Flute,   nullptr, EUIState::Home, IMenu::flgSelected },
+        { EMsg::Oboe,    nullptr, EUIState::Home, IMenu::flgNone     },
+        { EMsg::Bassoon, nullptr, EUIState::Home, IMenu::flgNone     },
+        { EMsg::Trumpet, nullptr, EUIState::Home, IMenu::flgNone     },
+        { EMsg::None,    nullptr, EUIState::None, IMenu::flgNone      }
     };
-#else // !USE_STR_MENU_MAP
-    static const CMsgMenuMap MenuMap[] {
-        { EMsg::Flute,   EUIState::Home },
-        { EMsg::Oboe,    EUIState::Home },
-        { EMsg::Bassoon, EUIState::Home },
-        { EMsg::Trumpet, EUIState::Home },
-        { EMsg::None,    EUIState::None }
-    };
-#endif
 
-    if (first) {
-        if (mpWinMenu != nullptr) {
-            mpWinMenu->Menu(MenuMap);
-#ifdef USE_STR_MENU_MAP
-            mpWinMenu->Label(L"Wind Instruments");
-#else // !USE_STR_MENU_MAP
-            mpWinMenu->Label(EMsg::Wind);
-#endif
-        }
-    }
+    if (first)
+        Load(MenuItems);
 }
 
+//------------------------------------------------------------------------------
+//
 void CUIStateMenuWind::Exit(bool commit /*= false*/) {
-    if (mpWinMenu == nullptr)
-        return;
-    if (commit) {
-        EMsg Label = mpWinMenu->Selection();
+    if (commit && mSelectedIx < mCount) {
+        EMsg Label = mpMenuItems[mSelectedIx].Text;
         if (Label != EMsg::None)
             Settings.Get().Instrument(Label);
     }
 }
 
-//EUIState CUIStateMenuWind::Event(EUIEvent event, void *pdata) {
-//}
+//------------------------------------------------------------------------------
+//
+EUIState CUIStateMenuWind::Event(EUIEvent event, void *pdata) {
+    switch(event) {
+    case EUIEvent::BtnBack:
+        UIState(EUIState::Previous, false);
+        break;
 
+    case EUIEvent::BtnOk:
+        if (mSelectedIx < mCount)
+            UIState(mpMenuItems[mSelectedIx].NextState, true);
+        break;
+
+    default:
+        break;
+    }
+
+    return EUIState::None;
+}
+
+//------------------------------------------------------------------------------
+//
 //EUIState CUIStateMenuWind::Click(EMsg msg) {
 //}
 
 //##############################################################################
 
+//------------------------------------------------------------------------------
+//
 CUIStateMenuPercussion::CUIStateMenuPercussion(EUIState uiState) :
-    CUIState(uiState), mpWinMenu(nullptr) {
+    CUIState(uiState) {
 }
 
+//------------------------------------------------------------------------------
+//
 void CUIStateMenuPercussion::Enter(bool first /*= true*/) {
-#ifdef USE_STR_MENU_MAP
-    static const CStrMenuMap MenuMap[] {
-        { "Drum",       EUIState::Home },
-        { "Cymbal",     EUIState::Home },
-        { "Tambourine", EUIState::Home },
-        { nullptr,      EUIState::None }
+    static const CMenuItem MenuItems[] = {
+        { EMsg::Drum,       nullptr, EUIState::Home, IMenu::flgSelected },
+        { EMsg::Cymbal,     nullptr, EUIState::Home, IMenu::flgNone     },
+        { EMsg::Tambourine, nullptr, EUIState::Home, IMenu::flgNone     },
+        { EMsg::None,       nullptr, EUIState::None, IMenu::flgNone     }
     };
-#else // !USE_STR_MENU_MAP
-    static const CMsgMenuMap MenuMap[] {
-        { EMsg::Drum,       EUIState::Home },
-        { EMsg::Cymbal,     EUIState::Home },
-        { EMsg::Tambourine, EUIState::Home },
-        { EMsg::None,       EUIState::None }
-    };
-#endif
 
-    if (first) {
-        if (mpWinMenu != nullptr) {
-            mpWinMenu->Menu(MenuMap);
-#ifdef USE_STR_MENU_MAP
-            mpWinMenu->Label(L"Percussion Instruments");
-#else // !USE_STR_MENU_MAP
-            mpWinMenu->Label(EMsg::Percussion);
-#endif
-        }
-    }
+    if (first)
+        Load(MenuItems);
 }
 
+//------------------------------------------------------------------------------
+//
 void CUIStateMenuPercussion::Exit(bool commit /*= false*/) {
-    if (mpWinMenu == nullptr)
-        return;
-    if (commit) {
-        EMsg Label = mpWinMenu->Selection();
+    if (commit && mSelectedIx < mCount) {
+        EMsg Label = mpMenuItems[mSelectedIx].Text;
         if (Label != EMsg::None)
             Settings.Get().Instrument(Label);
     }
 }
 
-//EUIState CUIStateMenuPercussion::Event(EUIEvent event, void *pdata) {
-//}
+//------------------------------------------------------------------------------
+//
+EUIState CUIStateMenuPercussion::Event(EUIEvent event, void *pdata) {
+    switch(event) {
+    case EUIEvent::BtnBack:
+        UIState(EUIState::Previous, false);
+        break;
 
+    case EUIEvent::BtnOk:
+        if (mSelectedIx < mCount)
+            UIState(mpMenuItems[mSelectedIx].NextState, true);
+        break;
+
+    default:
+        break;
+    }
+
+    return EUIState::None;
+}
+
+//------------------------------------------------------------------------------
+//
 //EUIState CUIStateMenuPercussion::Click(EMsg msg) {
 //}

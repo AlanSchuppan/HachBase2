@@ -1,13 +1,15 @@
 #ifndef WINHOME_HPP
 #define WINHOME_HPP
 
-#include "Lang.hpp"
-#include "UIState.hpp"
 #include "BaseWidget.hpp"
 
+//##############################################################################
+
 namespace Ui {
-class cWinHome;
+    class cWinHome;
 }
+
+class CUIState;
 
 class CWinHome : public CBaseWidget
 {
@@ -16,7 +18,8 @@ class CWinHome : public CBaseWidget
 public:
     explicit CWinHome(CUIState *puiState, QWidget *parent = 0);
     ~CWinHome();
-    void Instrument(EMsg instrument);
+//    void Instrument(EMsg instrument);
+    void Enter(bool first = true) override;
 
 private slots:
     void on_btnStart_clicked();
@@ -24,5 +27,7 @@ private slots:
 private:
     Ui::cWinHome *ui;
 };
+
+//##############################################################################
 
 #endif // WINHOME_HPP

@@ -23,9 +23,9 @@ public:
     EUIState UIState() const;
     EUIState PrevStateID() const;
 
-    void Enter(bool first = true);
-    void Exit(bool commit = false);
-    EUIState Event(EUIEvent event, void *pdata);
+    virtual void Enter(bool first = true);
+    virtual void Exit(bool commit = false);
+    EUIState Event(EUIEvent event, void *pdata = nullptr);
     EUIState Click(EMsg msg);
 
 //signals:

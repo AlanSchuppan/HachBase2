@@ -4,26 +4,11 @@
 #include <string>
 #include <vector>
 
-#include "Lang.hpp"
 #include "BaseWidget.hpp"
 
 namespace Ui {
     class CWinMenu;
 }
-
-//##############################################################################
-
-struct CStrMenuMap {
-    const char *Name;
-    EUIState UIState;
-};
-
-//##############################################################################
-
-struct CMsgMenuMap {
-    EMsg Message;
-    EUIState UIState;
-};
 
 //##############################################################################
 
@@ -33,25 +18,18 @@ class CWinMenu : public CBaseWidget {
 public:
     explicit CWinMenu(CUIState *puiState, QWidget *parent = 0);
     ~CWinMenu();
-    void Menu(const CStrMenuMap *pmenuMap);
-    void Menu(const CMsgMenuMap *pmenuMap);
-    void Disable(const std::vector<bool> &disables);
-    void RowSelect(uint32_t ix);
-    void Label(std::wstring label);
-    void Label(EMsg msg);
-    EMsg Selection() const;
 
-//    void Enter(bool first = true) override;
+    // CBaseWidget
+    void Enter(bool first = true) override;
+    void Exit(bool commit = false) override;
 
 private slots:
     void on_btnOk_clicked();
-
     void on_btnCancel_clicked();
+    void on_lwMenu_currentRowChanged(int currentRow);
 
 private:
     Ui::CWinMenu *ui;
-    std::vector<EMsg> mLabels;
-    std::vector<EUIState> mUIStates;
 };
 
 //##############################################################################
