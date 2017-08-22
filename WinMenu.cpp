@@ -47,28 +47,29 @@ void EnterHandler(Ui::CWinMenu */*pUI*/, bool /*first*/) {
 //------------------------------------------------------------------------------
 //
 void CWinMenu::Enter(bool first) {
-    mpUIState->Enter(first);
+    if (mpUIState->Enter(first)) {
+        IMenu *pMenu = dynamic_cast<IMenu *>(mpUIState);
+        if (pMenu != nullptr) {
+            ui->lwMenu->clear();
+            std::vector<std::wstring> Names;
+            std::vector<uint8_t> Flags;
+            pMenu->Items(Names, Flags);
+            size_t Count = Names.size();
+            for (size_t Ix = 0; Ix < Count; ++Ix) {
+                ui->lwMenu->addItem(QString::fromStdWString(Names[Ix]));
+                Qt::ItemFlags QtFlags = ui->lwMenu->item(Ix)->flags();
+                if ((Flags[Ix] & IMenu::flgDisabled) != 0)
+                    QtFlags &= ~Qt::ItemIsEnabled;
+                else
+                    QtFlags |= Qt::ItemIsEnabled;
+                ui->lwMenu->item(Ix)->setFlags(QtFlags);
 
-    IMenu *pMenu = dynamic_cast<IMenu *>(mpUIState);
-    if (pMenu != nullptr) {
-        std::vector<std::wstring> Names;
-        std::vector<uint8_t> Flags;
-        pMenu->Items(Names, Flags);
-        size_t Count = Names.size();
-        for (size_t Ix = 0; Ix < Count; ++Ix) {
-            ui->lwMenu->addItem(QString::fromStdWString(Names[Ix]));
-            Qt::ItemFlags QtFlags = ui->lwMenu->item(Ix)->flags();
-            if ((Flags[Ix] & IMenu::flgDisabled) != 0)
-                QtFlags &= ~Qt::ItemIsEnabled;
-            else
-                QtFlags |= Qt::ItemIsEnabled;
-            ui->lwMenu->item(Ix)->setFlags(QtFlags);
-
-        }
-        if (Count > 0) {
-            size_t SelectedIx = pMenu->SelectedIx();
-            if (SelectedIx < Count)
-                ui->lwMenu->setCurrentRow(SelectedIx);
+            }
+            if (Count > 0) {
+                size_t SelectedIx = pMenu->SelectedIx();
+                if (SelectedIx < Count)
+                    ui->lwMenu->setCurrentRow(SelectedIx);
+            }
         }
     }
 }

@@ -61,7 +61,8 @@ const char *CUIState::Name() const {
 
 //------------------------------------------------------------------------------
 //
-void CUIState::Enter(bool /*first = true*/) {
+bool CUIState::Enter(bool /*first = true*/) {
+    return false;
 }
 
 //------------------------------------------------------------------------------

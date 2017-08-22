@@ -53,10 +53,10 @@ public:
     CUIStateHome(EUIState uiState);
 
     // CUIState
-    void Enter(bool first = true) override;
-//    void Exit(bool commit = false) override;
-//    EUIState Event(EUIEvent event, void *pdata) override;
-//    EUIState Click(EMsg msg) override;
+    bool Enter(bool first = true) override;
+    // void Exit(bool commit = false) override;
+    // EUIState Event(EUIEvent event, void *pdata) override;
+    // EUIState Click(EMsg msg) override;
 
     EMsg Instrument() const;
 };
@@ -70,16 +70,16 @@ public:
 //    void Widget(CBaseWidget *pwidget);
 
     // CUIState
-    void Enter(bool first = true) override;
-//    void Exit(bool commit = false) override;
+    bool Enter(bool first = true) override;
+    //    void Exit(bool commit = false) override;
     EUIState Event(EUIEvent event, void *pdata) override;
-//    EUIState Click(EMsg msg) override;
+    //    EUIState Click(EMsg msg) override;
 
     // IMenu
-//    void Items(std::vector<std::wstring> &names,
-//               std::vector<uint8_t> &flags) override;
-//    size_t  SelectedIx() const override;
-//    void    SelectedIx(size_t ix) override;
+    // void Items(std::vector<std::wstring> &names,
+    //            std::vector<uint8_t> &flags) override;
+    // size_t  SelectedIx() const override;
+    // void    SelectedIx(size_t ix) override;
 };
 
 //##############################################################################
@@ -89,16 +89,16 @@ public:
     CUIStateMenuString(EUIState uiState);
 
     // CUIState
-    void Enter(bool first = true) override;
+    bool Enter(bool first = true) override;
     void Exit(bool commit = false) override;
     EUIState Event(EUIEvent event, void *pdata) override;
-//    EUIState Click(EMsg msg) override;
+    //    EUIState Click(EMsg msg) override;
 
     // IMenu
-//    void Items(std::vector<std::wstring> &names,
-//               std::vector<uint8_t> &flags) override;
-//    size_t  SelectedIx() const override;
-//    void    SelectedIx(size_t ix) override;
+    // void Items(std::vector<std::wstring> &names,
+    //            std::vector<uint8_t> &flags) override;
+    // size_t  SelectedIx() const override;
+    // void    SelectedIx(size_t ix) override;
 };
 
 //##############################################################################
@@ -108,10 +108,10 @@ public:
     CUIStateMenuWind(EUIState uiState);
 
     // CUIState
-    void Enter(bool first = true) override;
+    bool Enter(bool first = true) override;
     void Exit(bool commit = false) override;
     EUIState Event(EUIEvent event, void *pdata) override;
-//    EUIState Click(EMsg msg) override;
+    // EUIState Click(EMsg msg) override;
 };
 
 //##############################################################################
@@ -121,10 +121,10 @@ public:
     CUIStateMenuPercussion(EUIState uiState);
 
     // CUIState
-    void Enter(bool first = true) override;
+    bool Enter(bool first = true) override;
     void Exit(bool commit = false) override;
     EUIState Event(EUIEvent event, void *pdata) override;
-//    EUIState Click(EMsg msg) override;
+    // EUIState Click(EMsg msg) override;
 };
 
 //##############################################################################

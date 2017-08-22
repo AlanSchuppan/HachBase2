@@ -24,7 +24,6 @@ CBaseWidget *CUIContext::Create(EUIState uiState, CBaseWidget *pprevious) {
             CUIStateHome *pUIState =
                 new CUIStateHome(uiState);
             pWidget = new CWinHome(pUIState, pprevious);
-//            pUIState->Widget(pWidget);
         }
         break;
 
@@ -33,7 +32,6 @@ CBaseWidget *CUIContext::Create(EUIState uiState, CBaseWidget *pprevious) {
             CUIStateMenuInst *pUIState =
                 new CUIStateMenuInst(uiState);
             pWidget = new CWinMenu(pUIState, pprevious);
-//            pUIState->Widget(pWidget);
         }
         break;
 
@@ -42,7 +40,6 @@ CBaseWidget *CUIContext::Create(EUIState uiState, CBaseWidget *pprevious) {
             CUIStateMenuString *pUIState =
                 new CUIStateMenuString(uiState);
             pWidget = new CWinMenu(pUIState, pprevious);
-//            pUIState->Widget(pWidget);
         }
         break;
 
@@ -51,7 +48,6 @@ CBaseWidget *CUIContext::Create(EUIState uiState, CBaseWidget *pprevious) {
             CUIStateMenuWind *pUIState =
                 new CUIStateMenuWind(uiState);
             pWidget = new CWinMenu(pUIState, pprevious);
-//            pUIState->Widget(pWidget);
         }
         break;
 
@@ -60,7 +56,6 @@ CBaseWidget *CUIContext::Create(EUIState uiState, CBaseWidget *pprevious) {
             CUIStateMenuPercussion *pUIState =
                 new CUIStateMenuPercussion(uiState);
             pWidget = new CWinMenu(pUIState, pprevious);
-//            pUIState->Widget(pWidget);
         }
         break;
 
@@ -129,6 +124,7 @@ CBaseWidget *CUIContext::UIState(EUIState uiState, bool commit) {
         (mpWidget != nullptr) ? mpWidget->UIState() : EUIState::None;
     if (uiState == EUIState::Previous)
         uiState = UIStatePrevious();
+
     // If new state is not current state or no state
     if (uiState != EUIState::None && uiState != UIState) {
         // See if new state already exists

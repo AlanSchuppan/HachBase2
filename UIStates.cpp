@@ -24,6 +24,7 @@ void CMenuBase::Load(const CMenuItem *pmenuItems) {
     mpMenuItems = pmenuItems;
     if (pmenuItems == nullptr)
         return;
+
     while (pmenuItems->Text != EMsg::None || pmenuItems->pText != nullptr) {
         if (mSelectedIx > mCount && (pmenuItems->Flags & flgSelected) != 0)
                 mSelectedIx = mCount;
@@ -69,8 +70,9 @@ CUIStateHome::CUIStateHome(EUIState uiState) :
     CUIState(uiState) {
 }
 
-void CUIStateHome::Enter(bool /*first = true*/) {
+bool CUIStateHome::Enter(bool /*first = true*/) {
     Settings.Get().Instrument();
+    return true;
 }
 
 //void CUIStateHome::Exit(bool commit = false) {
@@ -91,17 +93,19 @@ EMsg CUIStateHome::Instrument() const {
 CUIStateMenuInst::CUIStateMenuInst(EUIState uiState) : CUIState(uiState) {
 }
 
-void CUIStateMenuInst::Enter(bool first /*= true*/) {
+bool CUIStateMenuInst::Enter(bool first /*= true*/) {
     static const CMenuItem MenuItems[] = {
         { EMsg::String,     nullptr, EUIState::InstString,     IMenu::flgSelected },
         { EMsg::Wind,       nullptr, EUIState::InstWind,       IMenu::flgNone     },
         { EMsg::Percussion, nullptr, EUIState::InstPercussion, IMenu::flgNone     },
-        { EMsg::Test,       nullptr, EUIState::Test,           IMenu::flgDisabled },
+        { EMsg::Test,       nullptr, EUIState::Test,           IMenu::flgNone     },
+        //{ EMsg::Test,       nullptr, EUIState::Test,           IMenu::flgDisabled },
         { EMsg::None,       nullptr, EUIState::None,           IMenu::flgNone     }
     };
 
     if (first)
         Load(MenuItems);
+    return first;
 }
 
 //------------------------------------------------------------------------------
@@ -141,7 +145,7 @@ CUIStateMenuString::CUIStateMenuString(EUIState uiState) : CUIState(uiState) {
 
 //------------------------------------------------------------------------------
 //
-void CUIStateMenuString::Enter(bool first /*= true*/) {
+bool CUIStateMenuString::Enter(bool first /*= true*/) {
     static const CMenuItem MenuItems[] = {
         { EMsg::Violin, nullptr, EUIState::Home, IMenu::flgSelected },
         { EMsg::Viola,  nullptr, EUIState::Home, IMenu::flgNone     },
@@ -152,6 +156,7 @@ void CUIStateMenuString::Enter(bool first /*= true*/) {
 
     if (first)
         Load(MenuItems);
+    return first;
 }
 
 //------------------------------------------------------------------------------
@@ -164,6 +169,8 @@ void CUIStateMenuString::Exit(bool commit /*= false*/) {
     }
 }
 
+//------------------------------------------------------------------------------
+//
 EUIState CUIStateMenuString::Event(EUIEvent event, void *pdata) {
     switch(event) {
     case EUIEvent::BtnBack:
@@ -197,7 +204,7 @@ CUIStateMenuWind::CUIStateMenuWind(EUIState uiState) :
 
 //------------------------------------------------------------------------------
 //
-void CUIStateMenuWind::Enter(bool first /*= true*/) {
+bool CUIStateMenuWind::Enter(bool first /*= true*/) {
     static const CMenuItem MenuItems[] = {
         { EMsg::Flute,   nullptr, EUIState::Home, IMenu::flgSelected },
         { EMsg::Oboe,    nullptr, EUIState::Home, IMenu::flgNone     },
@@ -208,6 +215,7 @@ void CUIStateMenuWind::Enter(bool first /*= true*/) {
 
     if (first)
         Load(MenuItems);
+    return first;
 }
 
 //------------------------------------------------------------------------------
@@ -255,7 +263,7 @@ CUIStateMenuPercussion::CUIStateMenuPercussion(EUIState uiState) :
 
 //------------------------------------------------------------------------------
 //
-void CUIStateMenuPercussion::Enter(bool first /*= true*/) {
+bool CUIStateMenuPercussion::Enter(bool first /*= true*/) {
     static const CMenuItem MenuItems[] = {
         { EMsg::Drum,       nullptr, EUIState::Home, IMenu::flgSelected },
         { EMsg::Cymbal,     nullptr, EUIState::Home, IMenu::flgNone     },
@@ -265,6 +273,7 @@ void CUIStateMenuPercussion::Enter(bool first /*= true*/) {
 
     if (first)
         Load(MenuItems);
+    return first;
 }
 
 //------------------------------------------------------------------------------
