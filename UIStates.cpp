@@ -13,7 +13,8 @@ struct CMenuMapOld {
 
 //------------------------------------------------------------------------------
 //
-CMenuBase::CMenuBase() : mpMenuItems(nullptr), mCount(0), mSelectedIx(-1) {
+CMenuBase::CMenuBase(EMsg titleID) : mpMenuItems(nullptr), mCount(0),
+                                     mSelectedIx(-1), mTitleID(titleID) {
 }
 
 //------------------------------------------------------------------------------
@@ -64,6 +65,13 @@ void   CMenuBase::SelectedIx(size_t ix) {
     mSelectedIx = ix;
 }
 
+//------------------------------------------------------------------------------
+//
+std::wstring CMenuBase::Title() {
+    CLang Lang;
+    return Lang.Message(mTitleID);
+}
+
 //##############################################################################
 
 CUIStateHome::CUIStateHome(EUIState uiState) :
@@ -90,7 +98,8 @@ EMsg CUIStateHome::Instrument() const {
 
 //##############################################################################
 
-CUIStateMenuInst::CUIStateMenuInst(EUIState uiState) : CUIState(uiState) {
+CUIStateMenuInst::CUIStateMenuInst(EUIState uiState) :
+    CUIState(uiState), CMenuBase(EMsg::InstrumentType) {
 }
 
 bool CUIStateMenuInst::Enter(bool first /*= true*/) {
@@ -140,7 +149,8 @@ EUIState CUIStateMenuInst::Event(EUIEvent event, void *pdata) {
 
 //------------------------------------------------------------------------------
 //
-CUIStateMenuString::CUIStateMenuString(EUIState uiState) : CUIState(uiState) {
+CUIStateMenuString::CUIStateMenuString(EUIState uiState) :
+    CUIState(uiState), CMenuBase(EMsg::String) {
 }
 
 //------------------------------------------------------------------------------
@@ -151,7 +161,7 @@ bool CUIStateMenuString::Enter(bool first /*= true*/) {
         { EMsg::Viola,  nullptr, EUIState::Home, IMenu::flgNone     },
         { EMsg::Cello,  nullptr, EUIState::Test, IMenu::flgNone     },
         { EMsg::Bass,   nullptr, EUIState::Home, IMenu::flgNone     },
-        { EMsg::None,   nullptr, EUIState::None, IMenu::flgNone      }
+        { EMsg::None,   nullptr, EUIState::None, IMenu::flgNone     }
     };
 
     if (first)
@@ -199,7 +209,7 @@ EUIState CUIStateMenuString::Event(EUIEvent event, void *pdata) {
 //------------------------------------------------------------------------------
 //
 CUIStateMenuWind::CUIStateMenuWind(EUIState uiState) :
-    CUIState(uiState) {
+    CUIState(uiState), CMenuBase(EMsg::Wind) {
 }
 
 //------------------------------------------------------------------------------
@@ -210,7 +220,7 @@ bool CUIStateMenuWind::Enter(bool first /*= true*/) {
         { EMsg::Oboe,    nullptr, EUIState::Home, IMenu::flgNone     },
         { EMsg::Bassoon, nullptr, EUIState::Home, IMenu::flgNone     },
         { EMsg::Trumpet, nullptr, EUIState::Home, IMenu::flgNone     },
-        { EMsg::None,    nullptr, EUIState::None, IMenu::flgNone      }
+        { EMsg::None,    nullptr, EUIState::None, IMenu::flgNone     }
     };
 
     if (first)
@@ -258,7 +268,7 @@ EUIState CUIStateMenuWind::Event(EUIEvent event, void *pdata) {
 //------------------------------------------------------------------------------
 //
 CUIStateMenuPercussion::CUIStateMenuPercussion(EUIState uiState) :
-    CUIState(uiState) {
+    CUIState(uiState), CMenuBase(EMsg::Percussion) {
 }
 
 //------------------------------------------------------------------------------

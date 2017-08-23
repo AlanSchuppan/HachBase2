@@ -13,6 +13,7 @@
 class IMenu {
 public:
     static const uint8_t flgNone = 0, flgDisabled = 1, flgSelected = 2;
+    virtual std::wstring Title() = 0;
     virtual void Items(std::vector<std::wstring> &names,
                        std::vector<uint8_t> &flags) = 0;
     virtual size_t SelectedIx() const = 0;
@@ -30,9 +31,10 @@ struct CMenuItem {
 
 class CMenuBase : public IMenu {
 public:
-    CMenuBase();
+    CMenuBase(EMsg titleID);
 
     // IMenu
+    std::wstring Title() override;
     void Items(std::vector<std::wstring> &names,
                            std::vector<uint8_t> &flags) override;
     virtual size_t SelectedIx() const;
@@ -42,6 +44,7 @@ protected:
     const CMenuItem  *mpMenuItems;
     size_t mCount;
     size_t mSelectedIx;
+    EMsg mTitleID;
 
     void Load(const CMenuItem *pmenuItems);
 };
@@ -76,6 +79,7 @@ public:
     //    EUIState Click(EMsg msg) override;
 
     // IMenu
+    // std::wstring Title() override;
     // void Items(std::vector<std::wstring> &names,
     //            std::vector<uint8_t> &flags) override;
     // size_t  SelectedIx() const override;
@@ -95,6 +99,7 @@ public:
     //    EUIState Click(EMsg msg) override;
 
     // IMenu
+    // std::wstring Title() override;
     // void Items(std::vector<std::wstring> &names,
     //            std::vector<uint8_t> &flags) override;
     // size_t  SelectedIx() const override;
@@ -112,6 +117,13 @@ public:
     void Exit(bool commit = false) override;
     EUIState Event(EUIEvent event, void *pdata) override;
     // EUIState Click(EMsg msg) override;
+
+    // IMenu
+    // std::wstring Title() override;
+    // void Items(std::vector<std::wstring> &names,
+    //            std::vector<uint8_t> &flags) override;
+    // size_t  SelectedIx() const override;
+    // void    SelectedIx(size_t ix) override;
 };
 
 //##############################################################################
@@ -120,11 +132,18 @@ class CUIStateMenuPercussion : public CUIState, public CMenuBase {
 public:
     CUIStateMenuPercussion(EUIState uiState);
 
-    // CUIState
+    // IMenu
     bool Enter(bool first = true) override;
     void Exit(bool commit = false) override;
     EUIState Event(EUIEvent event, void *pdata) override;
     // EUIState Click(EMsg msg) override;
+
+    // IMenu
+    // std::wstring Title() override;
+    // void Items(std::vector<std::wstring> &names,
+    //            std::vector<uint8_t> &flags) override;
+    // size_t  SelectedIx() const override;
+    // void    SelectedIx(size_t ix) override;
 };
 
 //##############################################################################

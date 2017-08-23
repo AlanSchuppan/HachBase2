@@ -5,7 +5,7 @@
 //#define STR_PTRS
 
 static const wchar_t *English[] = {
-    L"", L"Ok", L"Cancel", L"Start", L"InstrumentType", L"String", L"Wind",
+    L"", L"Ok", L"Cancel", L"Start", L"Instrument Type", L"String", L"Wind",
     L"Percussion", L"Violin", L"Viola", L"Cello", L"Bass", L"Flute", L"Oboe",
     L"Bassoon", L"Trumpet", L"Drum", L"Cymbal", L"Tambourine", L"Test"
 };

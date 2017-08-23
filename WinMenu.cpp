@@ -50,6 +50,7 @@ void CWinMenu::Enter(bool first) {
     if (mpUIState->Enter(first)) {
         IMenu *pMenu = dynamic_cast<IMenu *>(mpUIState);
         if (pMenu != nullptr) {
+            ui->lblTitle->setText(QString::fromStdWString(pMenu->Title()));
             ui->lwMenu->clear();
             std::vector<std::wstring> Names;
             std::vector<uint8_t> Flags;
