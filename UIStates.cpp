@@ -1,7 +1,143 @@
 #include "Settings.hpp"
 #include "UIStates.hpp"
+#include "Lang.hpp"
 
 //#define USE_STR_MENU_MAP
+
+//##############################################################################
+
+ITitleModel::~ITitleModel() {
+}
+
+//##############################################################################
+
+CTitleModel::CTitleModel(EMsg msg) {
+    CLang Lang;
+    mTitle = Lang.Message(msg);
+}
+
+CTitleModel::CTitleModel(const std::wstring &title) : mTitle(title) {
+}
+
+std::wstring CTitleModel::Title() const {
+    return mTitle;
+}
+
+//##############################################################################
+
+size_t CSelectModel::Count() const {
+//    return mCount;
+    return mModelItems.size();
+}
+
+std::wstring CSelectModel::Text(size_t ix) const {
+//    return (ix < mCount) ? mText[ix] : L"???";
+    return (ix < mModelItems.size()) ? mModelItems[ix].Text : L"???";
+}
+
+uint8_t CSelectModel::Flags(size_t ix) const {
+//    return (ix < mCount) ? mFlags[ix] : flgNone;
+    return (ix < mModelItems.size()) ? mModelItems[ix].Flags : flgNone;
+}
+
+void CSelectModel::Flags(size_t ix, uint8_t flags) {
+    // Only Selected and Checked can be changed, so clear all other bits
+    flags &= flgSelected | flgChecked;
+
+//    // Only zero or one item can be selected so clear Selected bits, if any
+//    for (size_t Ix = 0; Ix < mCount; ++Ix)
+//        mFlags[Ix] = mFlags[Ix] & ~flgSelected;
+
+//    // Assume checked will be cleared
+//    mModelItems[ix].Flags = mFlags[ix] & ~flgChecked;
+
+//    // Selected and Checked bits have been cleared, so set them as directed
+//    mFlags[ix] = mFlags[ix] | flags;
+
+    // Only zero or one item can be selected so clear Selected bits, if any
+    for (auto It = mModelItems.begin(); It < mModelItems.end(); ++It)
+        It->Flags = It->Flags & ~flgSelected;
+
+    // Assume checked will be cleared
+    auto It = mModelItems.begin() + ix;
+    It->Flags = It->Flags & ~flgChecked;
+
+    // Selected and Checked bits have been cleared, so set them as directed
+    It->Flags = It->Flags | flags;
+}
+
+size_t CSelectModel::SelectedIx() const {
+//    // Report first selected item (Should only be one)
+//    for (size_t Ix = 0; Ix < mCount; ++Ix)
+//        if ((mFlags[Ix] & flgSelected) != 0)
+//            return Ix;
+
+    // Report first selected item (Should only be one)
+    for (auto It = mModelItems.begin(); It < mModelItems.end(); ++It)
+        if ((It->Flags & flgSelected) != 0)
+            return It - mModelItems.begin();
+
+    // Report none selected
+    return -1;
+}
+
+EUIState CSelectModel::NextState() const {
+//    size_t Ix = SelectedIx();
+//    return (Ix < mCount) ? mNextStates[Ix] : EUIState::None;
+
+    // Report first selected item (Should only be one)
+    for (auto It = mModelItems.begin(); It < mModelItems.end(); ++It)
+        if ((It->Flags & flgSelected) != 0)
+            return It->NextState;
+
+    // Report none selected
+    return EUIState::None;
+}
+
+void CSelectModel::Load(const CSelectItem *pselectItems) {
+//    mCount = 0;
+//    mText.clear();
+//    mFlags.clear();
+//    mNextStates.clear();
+    mModelItems.clear();
+    if (pselectItems == nullptr)
+        return;
+
+//    while (pselectItems->Text != EMsg::None || pselectItems->pText != nullptr) {
+//        if((pselectItems->Flags & flgOmitted) == 0) {
+//            if (pselectItems->pText != nullptr)
+//                mText.push_back(pselectItems->pText);
+//            else {
+//                CLang Lang;
+//                mText.push_back(Lang.Message(pselectItems->Text));
+//            }
+//            mFlags.push_back(pselectItems->Flags);
+//            mNextStates.push_back(pselectItems->NextState);
+//            ++mCount;
+//        }
+
+//        ++pselectItems;
+//    }
+
+    while (pselectItems->Text != EMsg::None || pselectItems->pText != nullptr) {
+        if((pselectItems->Flags & flgOmitted) == 0) {
+            CSelectModelItem SelectModelItem;
+            if (pselectItems->pText != nullptr)
+                SelectModelItem.Text = pselectItems->pText;
+            else {
+                CLang Lang;
+                SelectModelItem.Text = Lang.Message(pselectItems->Text);
+            }
+            SelectModelItem.Flags = pselectItems->Flags;
+            SelectModelItem.NextState = pselectItems->NextState;
+            mModelItems.push_back(SelectModelItem);
+        }
+
+        ++pselectItems;
+    }
+}
+
+//##############################################################################
 
 struct CMenuMapOld {
     EMsg Message;
@@ -37,7 +173,7 @@ void CMenuBase::Load(const CMenuItem *pmenuItems) {
 //------------------------------------------------------------------------------
 //
 void CMenuBase::Items(std::vector<std::wstring> &names,
-                      std::vector<uint8_t> &flags) {
+                      std::vector<uint8_t> &flags) const {
     names.clear();
     flags.clear();
 
@@ -124,7 +260,7 @@ bool CUIStateMenuInst::Enter(bool first /*= true*/) {
 
 //------------------------------------------------------------------------------
 //
-EUIState CUIStateMenuInst::Event(EUIEvent event, void *pdata) {
+EUIState CUIStateMenuInst::Event(EUIEvent event, void * /*pdata*/) {
     switch(event) {
     case EUIEvent::BtnBack:
         UIState(EUIState::Previous, false);
@@ -181,7 +317,7 @@ void CUIStateMenuString::Exit(bool commit /*= false*/) {
 
 //------------------------------------------------------------------------------
 //
-EUIState CUIStateMenuString::Event(EUIEvent event, void *pdata) {
+EUIState CUIStateMenuString::Event(EUIEvent event, void * /* pdata */) {
     switch(event) {
     case EUIEvent::BtnBack:
         UIState(EUIState::Previous, false);
@@ -240,7 +376,7 @@ void CUIStateMenuWind::Exit(bool commit /*= false*/) {
 
 //------------------------------------------------------------------------------
 //
-EUIState CUIStateMenuWind::Event(EUIEvent event, void *pdata) {
+EUIState CUIStateMenuWind::Event(EUIEvent event, void * /* pdata */) {
     switch(event) {
     case EUIEvent::BtnBack:
         UIState(EUIState::Previous, false);
@@ -298,7 +434,7 @@ void CUIStateMenuPercussion::Exit(bool commit /*= false*/) {
 
 //------------------------------------------------------------------------------
 //
-EUIState CUIStateMenuPercussion::Event(EUIEvent event, void *pdata) {
+EUIState CUIStateMenuPercussion::Event(EUIEvent event, void * /* pdata */) {
     switch(event) {
     case EUIEvent::BtnBack:
         UIState(EUIState::Previous, false);

@@ -3,6 +3,8 @@
 #include "WinMenu.hpp"
 #include "ui_WinMenu.h"
 
+//#include <QGraphicsOpacityEffect>
+
 //------------------------------------------------------------------------------
 //
 CWinMenu::CWinMenu(CUIState *puiState, QWidget *parent) :
@@ -73,6 +75,18 @@ void CWinMenu::Enter(bool first) {
             }
         }
     }
+
+//    setWindowOpacity(100.0);
+
+//    QGraphicsOpacityEffect *pEffect0 = new QGraphicsOpacityEffect(ui->lwMenu);
+//    pEffect0->setOpacity(0.25);
+//    ui->lwMenu->setGraphicsEffect(pEffect0);
+//    ui->lwMenu->setAutoFillBackground(true);
+
+//    QGraphicsOpacityEffect *pEffect = new QGraphicsOpacityEffect(this);
+//    pEffect->setOpacity(0.25);
+//    setGraphicsEffect(pEffect);
+//    setAutoFillBackground(true);
 }
 
 //------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 #ifndef UICONTEXT_HPP
 #define UICONTEXT_HPP
 
-//#include <QObject>
+#include <QObject>
 
 #include <string>
 
